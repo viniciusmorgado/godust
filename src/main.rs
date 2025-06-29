@@ -10,5 +10,9 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    println!("Hello, {}!", args.name);
+    let project = models::project::Project::new(args.name);
+    match project.generate_structure() {
+        Ok(_) => println!("Project structure created successfully."),
+        Err(e) => eprintln!("Failed to create project structure: {}", e),
+    }
 }
