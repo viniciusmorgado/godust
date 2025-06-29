@@ -1,2 +1,2 @@
-# godust
+# Godust
 Godust
