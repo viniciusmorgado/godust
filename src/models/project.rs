@@ -1,4 +1,5 @@
-use std::fs;
+use std::fs::{self, File};
+use std::io::{BufWriter, Result, Write};
 
 pub struct Project {
     name: String,
@@ -21,14 +22,30 @@ impl Project {
         }
     }
 
-    pub fn generate_structure(&self) -> std::io::Result<()> {
+    pub fn generate_structure(&self) -> Result<()> {
         fs::create_dir(&self.name)?;
         fs::create_dir(&format!("{}/{}", &self.name, &self.name))?;
         fs::create_dir(&format!("{}/{}_core", &self.name, &self.name))?;
         Ok(())
     }
 
-    // pub fn generate_core() {}
+    pub fn generate_core(&self) -> Result<()> {
+        let file = File::create(format!(
+            "{}/{}/{}_core/Cargo.toml",
+            &self.name, &self.name, &self.name
+        ))?;
+
+        let mut writer = BufWriter::new(file);
+
+        writer.write_all(b"[package]\n")?;
+        writer.write_all(b"name = \"test_abacate\"\n")?;
+        writer.write_all(b"version = \"0.1.0\"\n")?;
+        writer.write_all(b"edition = \"2024\"\n")?;
+        writer.write_all(b"\n")?;
+        writer.write_all(b"[dependencies]\n")?;
+
+        Ok(())
+    }
 
     // pub fn generate_godot() {}
 
