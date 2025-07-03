@@ -101,6 +101,8 @@ This command compiles your Rust code, making it ready for Godot to use.
 
 2. **Open in Godot Engine**: Once the Rust build is complete, you can open and import your Godot project. The Godot project file (project.godot) is located in my_project_name/my_project_name/project.godot. Open the Godot editor and import this project.
 
+![Importing project.godot in Godot editor screen](https://github.com/viniciusmorgado/godust/blob/main/assets/importing_project.png)
+
 ## License
 
 This project is licensed under the [MIT License](https://github.com/viniciusmorgado/godust/blob/main/LICENSE).
