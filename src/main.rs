@@ -41,15 +41,29 @@ pub fn generate_core(name: &String) -> io::Result<()> {
     ))?;
     let mut cargo_file_writer = BufWriter::new(cargo_file);
 
+    // let godot_lib_version = utils::packages_version::get_crate_version("godot");
+
+    let godot_lib_version = tokio::runtime::Runtime::new()
+        .unwrap()
+        .block_on(utils::packages_version::get_crate_version("godot"))
+        .map_err(|e| {
+            io::Error::new(
+                io::ErrorKind::Other,
+                format!("Failed to get godot crate version: {}", e),
+            )
+        })?;
+
     cargo_file_writer.write_all(b"[package]\n")?;
     cargo_file_writer.write_all(format!("name = \"{}\"\n", name).as_bytes())?;
     cargo_file_writer.write_all(b"version = \"0.1.0\"\n")?;
     cargo_file_writer.write_all(b"edition = \"2024\"\n")?;
     cargo_file_writer.write_all(b"\n")?;
     cargo_file_writer.write_all(b"[dependencies]\n")?;
+    cargo_file_writer.write_all(format!("godot = \"{}\"\n", godot_lib_version).as_bytes())?;
     cargo_file_writer.write_all(b"\n")?;
     cargo_file_writer.write_all(b"[lib]\n")?;
     cargo_file_writer.write_all(b"crate-type = [\"cdylib\"]\n")?;
+    cargo_file_writer.flush()?;
 
     let lib_file = File::create(format!(
         "{}/{}_core/src/lib.rs",
@@ -71,6 +85,7 @@ pub fn generate_core(name: &String) -> io::Result<()> {
         )
         .as_bytes(),
     )?;
+    lib_file_writer.flush()?;
 
     Ok(())
 }
