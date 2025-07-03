@@ -1,4 +1,4 @@
-ATTENTION: This project is at the very beginning of its development. Please wait for updates.
+ATTENTION: This project is at the very beginning of its development, no templates are available yet. Please wait for updates.
 ---
 # Godust
 
@@ -51,6 +51,18 @@ Before getting started, please ensure you have the following installed:
 
 ## How to use it
 
+To generate the template:
+
+Note: For now, we don't have any templates available beyond the blank one, so it will default to the blank. When new templates are available, we will add the -t parameter to choose them.
+
+To use the blank template you need to define the engine version, render method and the project name:
+
+```
+godust --name my_project_name --engine 4.4 --rendering-method "forward_plus"
+```
+
+Godust help:
+
 ```
 Godust - CLI tool for Godot Engine template generation
 
@@ -63,6 +75,31 @@ Options:
   -h, --help                                 Print help
   -V, --version                              Print version
 ```
+
+Everything works well if you see something like this:
+
+```
+Successfully created project structure for 'my_project_name'...
+Successfully created Rust project 'my_project_name_core'...
+Successfully created Godot project 'my_project_name'...
+- Godot project name: my_project_name
+- Rust project name: my_project_name_core
+- Engine version: 4.4
+- Rendering method: forward_plus
+```
+## Running Your Project
+
+After generating your Godot-Rust project, there are a couple of essential steps before you can run it in the Godot editor:
+
+1. **Build the Rust project**: Navigate into the core of your new project where the Cargo.toml file is located. This will typically be at my_project_name/my_project_name_core. Once there, run the following command to build your Rust code:
+```
+cargo build
+```
+Note: For a production build you will compile using ``` cargo build --release ```.
+
+This command compiles your Rust code, making it ready for Godot to use.
+
+2. **Open in Godot Engine**: Once the Rust build is complete, you can open and import your Godot project. The Godot project file (project.godot) is located in my_project_name/my_project_name/project.godot. Open the Godot editor and import this project.
 
 ## License
 

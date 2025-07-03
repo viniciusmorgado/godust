@@ -1,7 +1,3 @@
-// TODO: Most content in this file is currently unused. Instead of trying to handle every name the user chooses,
-// I now enforce snake_case on the Clap parameter. Review and reduce this file to only the functions that are currently in use.
-// Attention: Some functions here still in use, be careful.
-
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 pub enum Casing {
     PascalCase = 1,
@@ -132,36 +128,6 @@ pub fn split_into_pascal_case(name: &String, detected_casing: Casing) -> String 
         .collect()
 }
 
-pub fn split_into_snake_case(name: &String, detected_casing: Casing) -> String {
-    if detected_casing == Casing::Undefined {
-        return name.to_owned();
-    }
-
-    let words = get_words_from_name(name.as_str(), detected_casing);
-    words
-        .into_iter()
-        .map(|word| to_all_lowercase(&word))
-        .collect::<Vec<String>>()
-        .join("_")
-}
-
-pub fn split_into_camel_case(name: &String, detected_casing: Casing) -> String {
-    if detected_casing == Casing::Undefined {
-        return name.to_owned();
-    }
-
-    let words = get_words_from_name(name.as_str(), detected_casing);
-    let mut result = String::new();
-    for (i, word) in words.into_iter().enumerate() {
-        if i == 0 {
-            result.push_str(&to_all_lowercase(&word));
-        } else {
-            result.push_str(&capitalize_first_char(&word));
-        }
-    }
-    result
-}
-
 pub fn split_into_kebab_case(name: &String, detected_casing: Casing) -> String {
     if detected_casing == Casing::Undefined {
         return name.to_owned();
@@ -173,18 +139,6 @@ pub fn split_into_kebab_case(name: &String, detected_casing: Casing) -> String {
         .map(|word| to_all_lowercase(&word))
         .collect::<Vec<String>>()
         .join("-")
-}
-
-pub fn handle_undefined(name: &String, detected_casing: Casing) -> String {
-    if detected_casing != Casing::Undefined {
-        return name.to_owned();
-    }
-
-    name.as_str()
-        .chars()
-        .filter(|c| c.is_ascii_alphanumeric())
-        .map(|c| c.to_ascii_lowercase())
-        .collect()
 }
 
 #[cfg(test)]
@@ -312,155 +266,18 @@ mod tests {
     }
 
     #[test]
-    fn convert_pascal_to_snake() {
-        let name = "MyPascalCaseName".to_string();
-        assert_eq!(
-            split_into_snake_case(&name, Casing::PascalCase),
-            "my_pascal_case_name"
-        );
-        let name_acronym = "HTTPRequestResponse".to_string();
-        assert_eq!(
-            split_into_snake_case(&name_acronym, Casing::PascalCase),
-            "http_request_response"
-        );
-    }
-
-    #[test]
-    fn convert_camel_to_snake() {
-        let name = "myCamelCaseName".to_string();
-        assert_eq!(
-            split_into_snake_case(&name, Casing::CamelCase),
-            "my_camel_case_name"
-        );
-    }
-
-    #[test]
-    fn convert_kebab_to_snake() {
-        let name = "my-kebab-case-name".to_string();
-        assert_eq!(
-            split_into_snake_case(&name, Casing::KebabCase),
-            "my_kebab_case_name"
-        );
-    }
-
-    #[test]
-    fn convert_snake_to_camel() {
-        let name = "my_snake_case_name".to_string();
-        assert_eq!(
-            split_into_camel_case(&name, Casing::SnakeCase),
-            "mySnakeCaseName"
-        );
-    }
-
-    #[test]
-    fn convert_kebab_to_camel() {
-        let name = "my-kebab-case-name".to_string();
-        assert_eq!(
-            split_into_camel_case(&name, Casing::KebabCase),
-            "myKebabCaseName"
-        );
-    }
-
-    #[test]
-    fn convert_pascal_to_camel() {
-        let name = "MyPascalCaseName".to_string();
-        assert_eq!(
-            split_into_camel_case(&name, Casing::PascalCase),
-            "myPascalCaseName"
-        );
-    }
-
-    #[test]
-    fn convert_camel_to_camel() {
-        let name = "myCamelCaseName".to_string();
-        assert_eq!(
-            split_into_camel_case(&name, Casing::CamelCase),
-            "myCamelCaseName"
-        );
-    }
-
-    #[test]
-    fn convert_snake_to_kebab() {
-        let name = "my_snake_case_name".to_string();
-        assert_eq!(
-            split_into_kebab_case(&name, Casing::SnakeCase),
-            "my-snake-case-name"
-        );
-    }
-
-    #[test]
-    fn convert_camel_to_kebab() {
-        let name = "myCamelCaseName".to_string();
-        assert_eq!(
-            split_into_kebab_case(&name, Casing::CamelCase),
-            "my-camel-case-name"
-        );
-    }
-
-    #[test]
-    fn convert_pascal_to_kebab() {
-        let name = "MyPascalCaseName".to_string();
-        assert_eq!(
-            split_into_kebab_case(&name, Casing::PascalCase),
-            "my-pascal-case-name"
-        );
-    }
-
-    #[test]
-    fn convert_kebab_to_kebab() {
-        let name = "my-kebab-case-name".to_string();
-        assert_eq!(
-            split_into_kebab_case(&name, Casing::KebabCase),
-            "my-kebab-case-name"
-        );
-    }
-
-    // #[test]
-    // fn test_handle_undefined_mixed_symbols_spaces() {
-    //     let name = "Snake_caseGame-name with spaces!".to_string();
-    //     assert_eq!(
-    //         handle_undefined(&name, Casing::Undefined),
-    //         "snakecasegamenameendswithspaces"
-    //     );
-    // }
-
-    #[test]
-    fn test_handle_undefined_with_symbols_and_numbers() {
-        let name = "$_my@#name-123!".to_string();
-        assert_eq!(handle_undefined(&name, Casing::Undefined), "myname123");
-    }
-
-    #[test]
-    fn test_handle_undefined_already_clean() {
-        let name = "cleanstring".to_string();
-        assert_eq!(handle_undefined(&name, Casing::Undefined), "cleanstring");
-    }
-
-    #[test]
-    fn test_handle_undefined_not_undefined_input() {
-        let name = "MyProject".to_string();
-        assert_eq!(handle_undefined(&name, Casing::PascalCase), "MyProject");
-    }
-
-    #[test]
     fn full_flow_conversion_test() {
         let input_name = "MyAwesomeProject";
         let detected = detect_casing(input_name);
         assert_eq!(detected, Casing::PascalCase);
 
         let input_string = input_name.to_string();
-        assert_eq!(
-            split_into_snake_case(&input_string, detected),
-            "my_awesome_project"
-        );
+
         assert_eq!(
             split_into_kebab_case(&input_string, detected),
             "my-awesome-project"
         );
-        assert_eq!(
-            split_into_camel_case(&input_string, detected),
-            "myAwesomeProject"
-        );
+
         assert_eq!(
             split_into_pascal_case(&input_string, detected),
             "MyAwesomeProject"
@@ -474,24 +291,5 @@ mod tests {
             split_into_pascal_case(&input_snake_string, detected_snake),
             "AnotherGameThing"
         );
-    }
-
-    #[test]
-    fn full_flow_undefined_test() {
-        let input_name = "Project Name With Spaces!";
-        let detected = detect_casing(input_name);
-        assert_eq!(detected, Casing::Undefined);
-
-        let input_string = input_name.to_string();
-        assert_eq!(
-            handle_undefined(&input_string, detected),
-            "projectnamewithspaces"
-        );
-
-        assert_eq!(
-            split_into_pascal_case(&input_string, detected),
-            input_string
-        );
-        assert_eq!(split_into_snake_case(&input_string, detected), input_string);
     }
 }
