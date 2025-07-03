@@ -55,6 +55,10 @@ pub fn detect_casing(input: &str) -> Casing {
         }
     }
 
+    if input.chars().all(|c| c.is_ascii_lowercase()) {
+        return Casing::SnakeCase;
+    }
+
     Casing::Undefined
 }
 
@@ -72,11 +76,16 @@ fn to_all_lowercase(s: &str) -> String {
 
 fn get_words_from_name(name: &str, casing: Casing) -> Vec<String> {
     match casing {
-        Casing::SnakeCase => name
-            .split('_')
-            .filter(|s| !s.is_empty())
-            .map(|s| s.to_owned())
-            .collect(),
+        Casing::SnakeCase => {
+            if name.contains('_') {
+                name.split('_')
+                    .filter(|s| !s.is_empty())
+                    .map(|s| s.to_owned())
+                    .collect()
+            } else {
+                vec![name.to_owned()]
+            }
+        }
         Casing::KebabCase => name
             .split('-')
             .filter(|s| !s.is_empty())
