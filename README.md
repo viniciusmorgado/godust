@@ -29,8 +29,8 @@ However, if you need assistance with programming your game using Godot and Rust,
 Here's what's coming for our project templates:
 
 ### Basic Templates
-* **Blank**: Currently in progress.
-* **Basic Hello World**: Planned.
+* **Blank (basic Rust and Godot setup ready to use)**: Completed.
+* **Basic Hello World**: Currently in progress.
 * **Basic 3D Hello World**: Planned.
 * **Basic 2D Hello World**: Planned.
 
