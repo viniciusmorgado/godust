@@ -103,6 +103,8 @@ This command compiles your Rust code, making it ready for Godot to use.
 
 ![Importing project.godot in Godot editor screen](https://github.com/viniciusmorgado/godust/blob/main/assets/importing_project.png)
 
+Even though the template generation process customizes the name of the core project (the Rust part of the project), which is different from the default defined in the [godot-rust book HelloWorld tutorial](https://godot-rust.github.io/book/intro/hello-world.html), the overall structure still needs to respect the same layout.
+
 ## License
 
 This project is licensed under the [MIT License](https://github.com/viniciusmorgado/godust/blob/main/LICENSE).
