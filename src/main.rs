@@ -19,6 +19,9 @@ struct Args {
     /// Render method (forward_plus, gl_compatibility, mobile)
     #[arg(short, long)]
     rendering_method: String,
+    /// Template
+    #[arg(short, long)]
+    template: String,
 }
 
 fn main() {

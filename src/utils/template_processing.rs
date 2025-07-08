@@ -1,6 +1,11 @@
 use crate::utils::uid_generator::generate_godot_uid;
 use std::collections::HashMap;
 
+// variables: generate_uid, uid://ddprqwf75tkwe
+//
+
+pub fn load_template_files() {}
+
 pub fn process_template_file(content: &str, variables: &HashMap<String, String>) -> String {
     let mut result = content.to_string();
 
