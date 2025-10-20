@@ -1,4 +1,3 @@
----
 # Godust
 
 Godust is a CLI tool that generates [Godot Engine](https://godotengine.org/) project templates in Rust, specifically using the godot-rust library (GDExtension bindings for Rust).
