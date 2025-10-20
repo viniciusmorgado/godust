@@ -56,7 +56,7 @@ Note: For now, we don't have any templates available beyond the blank one, so it
 To use the blank template you need to define the engine version, render method and the project name:
 
 ```
-godust --name my_project_name --engine 4.4 --rendering-method "forward_plus"
+godust --name my_project_name --engine 4.5 --rendering-method "forward_plus"
 ```
 
 Godust help:
