@@ -1,4 +1,3 @@
-ATTENTION: This project is at the very beginning of its development, no templates are available yet. Please wait for updates.
 ---
 # Godust
 
@@ -6,7 +5,7 @@ Godust is a CLI tool that generates [Godot Engine](https://godotengine.org/) pro
 
 The [godot-rust](https://godot-rust.github.io/) library is a pure Rust implementation of the GDExtension bindings. This means you can write code in Rust that's equivalent to what you'd typically use GDScript or C# for in Godot.
 
-A key advantage is that because your game project is fundamentally a Rust project, you can easily integrate other Rust tools and libraries. For example, you can incorporate [Bevy Engine](https://bevy.org/) packages, or use [Vulkano](https://crates.io/crates/vulkano) and [Ash](https://crates.io/crates/ash) for Vulkan graphics code. We're even planning future templates that will include pre-built scripts for common features, like an inventory system using Bevy ECS, among others.
+A key advantage is that because your game project is fundamentally a Rust project, you can easily integrate other Rust tools and libraries. For example, you can incorporate [Bevy Engine](https://bevy.org/) packages, or use [Vulkano](https://crates.io/crates/vulkano) and [Ash](https://crates.io/crates/ash) for Vulkan graphics code. We're planning future templates that will include pre-built scripts for common features, like incorporating Bevy ECS templates, among others.
 
 ## Where to Find Help?
 
