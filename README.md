@@ -4,7 +4,7 @@ Godust is a CLI tool that generates [Godot Engine](https://godotengine.org/) pro
 
 The [godot-rust](https://godot-rust.github.io/) library is a pure Rust implementation of the GDExtension bindings. This means you can write code in Rust that's equivalent to what you'd typically use GDScript or C# for in Godot.
 
-A key advantage is that because your game project is fundamentally a Rust project, you can easily integrate other Rust tools and libraries. For example, you can incorporate [Bevy Engine](https://bevy.org/) packages, or use [Vulkano](https://crates.io/crates/vulkano) and [Ash](https://crates.io/crates/ash) for Vulkan graphics code. We're planning future templates that will include pre-built scripts for common features, like incorporating Bevy ECS templates, among others.
+A key advantage is that because your game project is fundamentally a Rust project, you can easily integrate other Rust tools and libraries. For example, you can incorporate [Bevy Engine](https://bevy.org/) packages, or use [Vulkano](https://crates.io/crates/vulkano) and [Ash](https://crates.io/crates/ash) for Vulkan graphics code. We're planning future templates that will include pre-built scripts for common features, incorporating Bevy ECS templates, among others.
 
 ## Where to Find Help?
 
@@ -27,18 +27,17 @@ However, if you need assistance with programming your game using Godot and Rust,
 Here's what's coming for our project templates:
 
 ### Basic Templates
-* **Blank (basic Rust and Godot setup ready to use)**: Completed.
-* **Basic Hello World**: Currently in progress.
+* **Blank (godot-rust and Godot setup ready to use)**: Completed. - When no template is selected we default to this.
+* **Blank + Bevy ECS**: Currently in progress..
+* **Basic Hello World**: Planned.
 * **Basic 3D Hello World**: Planned.
 * **Basic 2D Hello World**: Planned.
 
 ### Full Templates
 * **Third Person**: Planned.
-* **Third Person + Inventory with Bevy ECS**: Planned.
 * **First Person**: Planned.
 * **Top Down**: Planned.
 * **Vehicle**: Planned.
-* **Vulkan Shaders with Vulkano Library**: Planned.
 
 ## Pre-requisites
 
