@@ -22,22 +22,33 @@ However, if you need assistance with programming your game using Godot and Rust,
 
 **Disclaimer**: Please note that this CLI and its templates are an independent project and are not associated with godot-rust or its development team.
 
-## Templates Roadmap
+# Templates Roadmap
 
-Here's what's coming for our project templates:
+## Basic Templates
 
-### Basic Templates
-* **Blank (godot-rust and Godot setup ready to use)**: Completed. - When no template is selected we default to this.
-* **Blank + Bevy ECS**: Currently in progress..
-* **Basic Hello World**: Planned.
-* **Basic 3D Hello World**: Planned.
-* **Basic 2D Hello World**: Planned.
+| Template | Status | Description |
+|----------|--------|-------------|
+| **Blank** | ✅ Complete | Godot-rust and Godot setup ready to use. Default template when no template is selected. Provides minimal project structure to start building. |
+| **Blank + Bevy ECS** | 🚧 In Progress | Blank template integrated with Bevy's Entity Component System for enhanced game logic architecture and performance. |
+| **Basic Hello World** | 📋 Planned | Simple "Hello World" example demonstrating basic Godot-rust usage and core concepts. |
+| **Basic 3D Hello World** | 📋 Planned | 3D scene with basic interaction example. Introduces 3D nodes, transforms, and spatial scripting. |
+| **Basic 2D Hello World** | 📋 Planned | 2D scene with basic interaction example. Covers 2D nodes, sprites, and basic game mechanics. |
 
-### Full Templates
-* **Third Person**: Planned.
-* **First Person**: Planned.
-* **Top Down**: Planned.
-* **Vehicle**: Planned.
+## Full Templates
+
+| Template | Status | Description |
+|----------|--------|-------------|
+| **Third Person** | 📋 Planned | Complete third-person character controller with camera, movement, and interaction systems. |
+| **First Person** | 📋 Planned | Complete first-person character controller with mouse look, WASD movement, and basic mechanics. |
+| **Top Down** | 📋 Planned | Full top-down game template with camera, movement, and common gameplay patterns. |
+| **Vehicle** | 📋 Planned | Complete vehicle physics and controls template with driving mechanics and camera systems. |
+
+---
+
+**Status Legend:**
+- ✅ **Complete** - Ready to use
+- 🚧 **In Progress** - Currently being developed
+- 📋 **Planned** - Scheduled for future development
 
 ## Pre-requisites
 
