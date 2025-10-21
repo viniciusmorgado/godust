@@ -28,20 +28,20 @@ However, if you need assistance with programming your game using Godot and Rust,
 
 | Template | Status | Description |
 |----------|--------|-------------|
-| **Blank** | ✅ Complete | Godot-rust and Godot setup ready to use. Default template when no template is selected. Provides minimal project structure to start building. |
-| **Blank + Bevy ECS** | 🚧 In Progress | Blank template integrated with Bevy's Entity Component System for enhanced game logic architecture and performance. |
-| **Basic Hello World** | 📋 Planned | Simple "Hello World" example demonstrating basic Godot-rust usage and core concepts. |
-| **Basic 3D Hello World** | 📋 Planned | 3D scene with basic interaction example. Introduces 3D nodes, transforms, and spatial scripting. |
-| **Basic 2D Hello World** | 📋 Planned | 2D scene with basic interaction example. Covers 2D nodes, sprites, and basic game mechanics. |
+| **Blank** | ✅ | Godot-rust and Godot setup ready to use. Default template when no template is selected. Provides minimal project structure to start building. |
+| **Blank + Bevy ECS** | 🚧 | Blank template integrated with Bevy's Entity Component System for enhanced game logic architecture and performance. |
+| **Basic Hello World** | 📋 | Simple "Hello World" example demonstrating basic Godot-rust usage and core concepts. |
+| **Basic 3D Hello World** | 📋 | 3D scene with basic interaction example. Introduces 3D nodes, transforms, and spatial scripting. |
+| **Basic 2D Hello World** | 📋 | 2D scene with basic interaction example. Covers 2D nodes, sprites, and basic game mechanics. |
 
 ## Full Templates
 
 | Template | Status | Description |
 |----------|--------|-------------|
-| **Third Person** | 📋 Planned | Complete third-person character controller with camera, movement, and interaction systems. |
-| **First Person** | 📋 Planned | Complete first-person character controller with mouse look, WASD movement, and basic mechanics. |
-| **Top Down** | 📋 Planned | Full top-down game template with camera, movement, and common gameplay patterns. |
-| **Vehicle** | 📋 Planned | Complete vehicle physics and controls template with driving mechanics and camera systems. |
+| **Third Person** | 📋 | Complete third-person character controller with camera, movement, and interaction systems. |
+| **First Person** | 📋 | Complete first-person character controller with mouse look, WASD movement, and basic mechanics. |
+| **Top Down** | 📋 | Full top-down game template with camera, movement, and common gameplay patterns. |
+| **Vehicle** | 📋 | Complete vehicle physics and controls template with driving mechanics and camera systems. |
 
 ---
 
