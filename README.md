@@ -129,3 +129,5 @@ Even though the template generation process customizes the name of the core proj
 ## License
 
 This project is licensed under the [MIT License](https://github.com/viniciusmorgado/godust/blob/main/LICENSE).
+
+- versioning test
