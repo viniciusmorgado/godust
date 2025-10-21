@@ -61,7 +61,7 @@ Before getting started, please ensure you have the following installed:
 
 To generate the template:
 
-Note: For now, we don't have any templates available beyond the blank one, so it will default to the blank. When new templates are available, we will add the -t parameter to choose them.
+Note: For now, we only have the "blank" template available. The `-t` (or `--template`) parameter is optional and defaults to "blank". When new templates are available, you can use this parameter to choose them.
 
 To use the blank template you need to define the engine version, render method and the project name:
 
@@ -69,17 +69,30 @@ To use the blank template you need to define the engine version, render method a
 godust --name my_project_name --engine 4.5 --rendering-method "forward_plus"
 ```
 
+You can also explicitly specify the template (optional, since it defaults to "blank"):
+
+```
+godust --name my_project_name --engine 4.4 --rendering-method "forward_plus" --template blank
+```
+
+Or using the short form:
+
+```
+godust -n my_project_name -e 4.4 -r "forward_plus" -t blank
+```
+
 Godust help:
 
 ```
 Godust - CLI tool for Godot Engine template generation
 
-Usage: godust --name <NAME> --engine <ENGINE> --rendering-method <RENDERING_METHOD>
+Usage: godust --name <NAME> --engine <ENGINE> --rendering-method <RENDERING_METHOD> [OPTIONS]
 
 Options:
-  -n, --name <NAME>                          Define project name
-  -e, --engine <ENGINE>                      Godot Engine version
-  -r, --rendering-method <RENDERING_METHOD>  Rendering method (forward_plus or compatibility)
+  -n, --name <NAME>                          Project name
+  -e, --engine <ENGINE>                      Engine version
+  -r, --rendering-method <RENDERING_METHOD>  Render method (forward_plus, gl_compatibility, mobile)
+  -t, --template <TEMPLATE>                  Template (available: blank) [default: blank]
   -h, --help                                 Print help
   -V, --version                              Print version
 ```

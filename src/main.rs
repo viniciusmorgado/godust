@@ -19,8 +19,8 @@ struct Args {
     /// Render method (forward_plus, gl_compatibility, mobile)
     #[arg(short, long)]
     rendering_method: String,
-    /// Template
-    #[arg(short, long)]
+    /// Template (available: blank)
+    #[arg(short, long, default_value = "blank")]
     template: String,
 }
 
@@ -34,6 +34,17 @@ fn main() {
             args.name
         );
         eprintln!("Please provide a name in snake_case (e.g., 'my_project_name').");
+        return;
+    }
+
+    // Validate template parameter
+    if args.template != "blank" {
+        eprintln!(
+            "Error: Template '{}' is not supported.",
+            args.template
+        );
+        eprintln!("Currently available templates: blank");
+        eprintln!("Usage: --template blank (or -t blank)");
         return;
     }
 
