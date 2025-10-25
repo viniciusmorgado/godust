@@ -52,19 +52,20 @@ jobs:
           target: ${{ matrix.target }}
           override: true
 
-      - name: Install cross-compilation tools (Linux ARM64)
+      - name: Install cross-compilation tool
         if: matrix.target == 'aarch64-unknown-linux-gnu'
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y gcc-aarch64-linux-gnu
+        run: cargo install cross --git https://github.com/cross-rs/cross
 
-      - name: Build release binary
+      - name: Build release binary (native)
+        if: matrix.target != 'aarch64-unknown-linux-gnu'
         uses: actions-rs/cargo@v1
         with:
           command: build
           args: --release --target ${{ matrix.target }}
-        env:
-          CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
+
+      - name: Build release binary (cross for ARM64)
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
+        run: cross build --release --target ${{ matrix.target }}
 
       - name: Package binary (Unix)
         if: matrix.archive == 'tar.gz'
