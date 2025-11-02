@@ -37,14 +37,14 @@ fn main() {
         return;
     }
 
-    // Validate template parameter
-    if args.template != "blank" {
+    // Validate template exists
+    let available_templates = vec!["blank"];
+    if !available_templates.contains(&args.template.as_str()) {
         eprintln!(
             "Error: Template '{}' is not supported.",
             args.template
         );
-        eprintln!("Currently available templates: blank");
-        eprintln!("Usage: --template blank (or -t blank)");
+        eprintln!("Available templates: {}", available_templates.join(", "));
         return;
     }
 
@@ -76,7 +76,7 @@ fn main() {
         }
     }
 
-    match generate_core(&args.name) {
+    match generate_core(&args.name, &args.template, &args.rendering_method, &args.engine) {
         Ok(()) => {
             println!(
                 "✅ Successfully created Rust project '{}_core'...",
@@ -101,7 +101,7 @@ fn main() {
         }
     }
 
-    match generate_godot(&args.name, &args.rendering_method, &args.engine) {
+    match generate_godot(&args.name, &args.template, &args.rendering_method, &args.engine) {
         Ok(()) => {
             println!("✅ Successfully created Godot project '{}'...", args.name);
         }
