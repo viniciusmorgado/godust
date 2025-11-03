@@ -5,31 +5,19 @@ use std::{
 
 use crate::utils;
 
-struct RenderingMethod {
-    method: String,     // Forward Plus, GL Compatibility, Mobile
-    identifier: String, //forward_plus, gl_compatibility, mobile
-}
-
 pub struct Project {
-    core_project: String,   // rust project
-    engine_project: String, // Godot project
-    rendering_method: RenderingMethod,
+    core_project: String,
+    engine_project: String,
 }
 
 const DEFAULT_CORE_TEMPLATE: &str = "{}/{}_core";
 const DEFAULT_ENGINE_TEMPLATE: &str = "{}/{}";
-const DEFAULT_RENDERING_METHOD: &str = "Forward Plus";
-const DEFAULT_RENDERING_ID: &str = "forward_plus";
 
 impl Default for Project {
     fn default() -> Self {
         Self {
             core_project: DEFAULT_CORE_TEMPLATE.to_string(),
             engine_project: DEFAULT_ENGINE_TEMPLATE.to_string(),
-            rendering_method: RenderingMethod {
-                method: DEFAULT_RENDERING_METHOD.to_string(),
-                identifier: DEFAULT_RENDERING_ID.to_string(),
-            },
         }
     }
 }
@@ -57,12 +45,7 @@ impl Project {
         Ok(())
     }
 
-    pub fn set_rendering_method(&mut self, identifier: &str) {
-        self.rendering_method.method = Self::format_rendering_method(identifier);
-        self.rendering_method.identifier = identifier.to_string();
-    }
-
-    fn format_rendering_method(identifier: &str) -> String {
+    pub fn format_rendering_method(identifier: &str) -> String {
         match identifier {
             "forward_plus" => "Forward Plus".to_string(),
             "gl_compatibility" => "GL Compatibility".to_string(),

@@ -7,8 +7,8 @@ use crate::utils::{crates_version, naming};
 ///
 /// This template creates a Godot + Rust + Bevy ECS project with:
 /// - Cargo.toml with godot and bevy_ecs dependencies
-/// - lib.rs with GDExtension setup and ECS integration
-/// - examples/ folder with entity_spawner.rs demonstration
+/// - lib.rs with GDExtension setup and examples module
+/// - EntitySpawner example demonstrating Bevy ECS integration with Godot
 /// - Godot project files (project.godot, extension.gdextension, Main.tscn, icon.svg)
 ///
 /// # Arguments
@@ -39,14 +39,14 @@ pub async fn build_context(
 
     let bevy_ecs_version = crates_version::get_crate_version("bevy_ecs")
         .await
-        .unwrap_or_else(|_| "0.15.0".to_string()); // Fallback if crates.io is unreachable
+        .unwrap_or_else(|_| "0.14.0".to_string()); // Fallback if crates.io is unreachable
 
     // Insert all template variables
     context.insert("project_name", project_name);
     context.insert("project_kebab_name", &kebab_name);
     context.insert("struct_name", &pascal_name);
     context.insert("godot_version", &godot_version);
-    context.insert("bevy_ecs_version", &bevy_ecs_version); // blank_ecs specific!
+    context.insert("bevy_ecs_version", &bevy_ecs_version);
     context.insert("engine_version", engine_version);
     context.insert("rendering_method", rendering_method);
     context.insert("rendering_method_formatted", rendering_method_formatted);
