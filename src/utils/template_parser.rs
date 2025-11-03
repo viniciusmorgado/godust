@@ -3,15 +3,15 @@ use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
 use tera::{Context, Tera, Value};
-use walkdir::WalkDir;
+use include_dir::{Dir, File};
 
 use crate::utils::uid_generator;
 
 #[derive(Debug)]
-struct TemplateStructure {
-    tera_files: Vec<PathBuf>,
-    static_files: Vec<PathBuf>,
-    relative_paths: HashMap<PathBuf, PathBuf>,
+struct TemplateStructure<'a> {
+    tera_files: Vec<&'a File<'a>>,
+    static_files: Vec<&'a File<'a>>,
+    relative_paths: HashMap<String, PathBuf>,
 }
 
 fn substitute_path_variables(path: &Path, context: &Context) -> Result<PathBuf, io::Error> {
@@ -65,31 +65,32 @@ fn substitute_path_variables(path: &Path, context: &Context) -> Result<PathBuf, 
 }
 
 pub fn parse_template(
-    template_path: &Path,
+    template_dir: &Dir,
     dest_path: &Path,
     context: Context,
 ) -> Result<(), io::Error> {
-    if !template_path.exists() {
-        return Err(io::Error::new(
-            io::ErrorKind::NotFound,
-            format!("Template directory not found: {}", template_path.display()),
-        ));
-    }
-
-    let template_structure = discover_template_structure(template_path)?;
+    let template_structure = discover_template_structure(template_dir)?;
 
     validate_destination(dest_path, &template_structure, &context)?;
 
-    let tera = init_tera_engine(template_path)?;
+    let tera = init_tera_engine(template_dir)?;
 
     for tera_file in &template_structure.tera_files {
+        let file_path = tera_file.path();
+        let path_str = file_path.to_str().ok_or_else(|| {
+            io::Error::new(
+                io::ErrorKind::Other,
+                format!("Invalid UTF-8 in path: {:?}", file_path),
+            )
+        })?;
+
         let relative_path = template_structure
             .relative_paths
-            .get(tera_file)
+            .get(path_str)
             .ok_or_else(|| {
                 io::Error::new(
                     io::ErrorKind::Other,
-                    format!("Missing relative path for: {}", tera_file.display()),
+                    format!("Missing relative path for: {}", path_str),
                 )
             })?;
 
@@ -111,13 +112,21 @@ pub fn parse_template(
     }
 
     for static_file in &template_structure.static_files {
+        let file_path = static_file.path();
+        let path_str = file_path.to_str().ok_or_else(|| {
+            io::Error::new(
+                io::ErrorKind::Other,
+                format!("Invalid UTF-8 in path: {:?}", file_path),
+            )
+        })?;
+
         let relative_path = template_structure
             .relative_paths
-            .get(static_file)
+            .get(path_str)
             .ok_or_else(|| {
                 io::Error::new(
                     io::ErrorKind::Other,
-                    format!("Missing relative path for: {}", static_file.display()),
+                    format!("Missing relative path for: {}", path_str),
                 )
             })?;
 
@@ -128,43 +137,53 @@ pub fn parse_template(
             fs::create_dir_all(parent)?;
         }
 
-        fs::copy(static_file, &dest_file)?;
+        // Write embedded file contents to destination
+        fs::write(&dest_file, static_file.contents())?;
     }
 
     Ok(())
 }
 
-fn discover_template_structure(template_path: &Path) -> Result<TemplateStructure, io::Error> {
+fn discover_template_structure<'a>(template_dir: &'a Dir<'a>) -> Result<TemplateStructure<'a>, io::Error> {
     let mut tera_files = Vec::new();
     let mut static_files = Vec::new();
     let mut relative_paths = HashMap::new();
 
-    for entry in WalkDir::new(template_path)
-        .follow_links(false)
-        .into_iter()
-        .filter_map(|e| e.ok())
-    {
-        let path = entry.path();
+    // Get the base path that we need to strip from all file paths
+    // This is the template directory name (e.g., "blank" or "blank_ecs")
+    let base_prefix = template_dir.path();
 
-        if !path.is_file() {
-            continue;
+    // Recursively traverse embedded directory
+    fn traverse_dir<'a>(
+        dir: &'a Dir,
+        tera_files: &mut Vec<&'a File<'a>>,
+        static_files: &mut Vec<&'a File<'a>>,
+        relative_paths: &mut HashMap<String, PathBuf>,
+        base_prefix: &Path,
+    ) {
+        for file in dir.files() {
+            let file_path = file.path();
+            let path_str = file_path.to_str().unwrap_or("");
+
+            if file_path.extension().and_then(|s| s.to_str()) == Some("tera") {
+                tera_files.push(file);
+            } else {
+                static_files.push(file);
+            }
+
+            // Strip the template directory prefix to get relative path
+            let relative_path = file_path.strip_prefix(base_prefix)
+                .unwrap_or(file_path);
+
+            relative_paths.insert(path_str.to_string(), relative_path.to_path_buf());
         }
 
-        let relative_path = path.strip_prefix(template_path).map_err(|e| {
-            io::Error::new(
-                io::ErrorKind::Other,
-                format!("Failed to calculate relative path: {}", e),
-            )
-        })?;
-
-        if path.extension().and_then(|s| s.to_str()) == Some("tera") {
-            tera_files.push(path.to_path_buf());
-        } else {
-            static_files.push(path.to_path_buf());
+        for subdir in dir.dirs() {
+            traverse_dir(subdir, tera_files, static_files, relative_paths, base_prefix);
         }
-
-        relative_paths.insert(path.to_path_buf(), relative_path.to_path_buf());
     }
+
+    traverse_dir(template_dir, &mut tera_files, &mut static_files, &mut relative_paths, base_prefix);
 
     Ok(TemplateStructure {
         tera_files,
@@ -173,24 +192,52 @@ fn discover_template_structure(template_path: &Path) -> Result<TemplateStructure
     })
 }
 
-fn init_tera_engine(template_path: &Path) -> Result<Tera, io::Error> {
-    let pattern = template_path
-        .join("**/*.tera")
-        .to_str()
-        .ok_or_else(|| {
-            io::Error::new(
-                io::ErrorKind::Other,
-                "Invalid template path (non-UTF8 characters)",
-            )
-        })?
-        .to_string();
+fn init_tera_engine(template_dir: &Dir) -> Result<Tera, io::Error> {
+    let mut tera = Tera::default();
 
-    let mut tera = Tera::new(&pattern).map_err(|e| {
-        io::Error::new(
-            io::ErrorKind::Other,
-            format!("Failed to initialize Tera engine: {}", e),
-        )
-    })?;
+    // Get the base path to strip from template names
+    let base_prefix = template_dir.path();
+
+    // Recursively add all .tera files to the engine
+    fn add_tera_files(dir: &Dir, tera: &mut Tera, base_prefix: &Path) -> Result<(), io::Error> {
+        for file in dir.files() {
+            let file_path = file.path();
+            if file_path.extension().and_then(|s| s.to_str()) == Some("tera") {
+                // Strip the template directory prefix to get relative path
+                let relative_path = file_path.strip_prefix(base_prefix)
+                    .unwrap_or(file_path);
+
+                let template_name = relative_path.to_str().ok_or_else(|| {
+                    io::Error::new(
+                        io::ErrorKind::Other,
+                        format!("Invalid UTF-8 in template path: {:?}", relative_path),
+                    )
+                })?.replace('\\', "/");
+
+                let content = std::str::from_utf8(file.contents()).map_err(|e| {
+                    io::Error::new(
+                        io::ErrorKind::Other,
+                        format!("Invalid UTF-8 in template file '{}': {}", template_name, e),
+                    )
+                })?;
+
+                tera.add_raw_template(&template_name, content).map_err(|e| {
+                    io::Error::new(
+                        io::ErrorKind::Other,
+                        format!("Failed to add template '{}': {}", template_name, e),
+                    )
+                })?;
+            }
+        }
+
+        for subdir in dir.dirs() {
+            add_tera_files(subdir, tera, base_prefix)?;
+        }
+
+        Ok(())
+    }
+
+    add_tera_files(template_dir, &mut tera, base_prefix)?;
 
     tera.register_function("generate_uid", generate_uid_function);
 
@@ -221,7 +268,10 @@ fn validate_destination(
     let mut conflicts = Vec::new();
 
     for tera_file in &template_structure.tera_files {
-        if let Some(relative_path) = template_structure.relative_paths.get(tera_file) {
+        let file_path = tera_file.path();
+        let path_str = file_path.to_str().unwrap_or("");
+
+        if let Some(relative_path) = template_structure.relative_paths.get(path_str) {
             let substituted_path = substitute_path_variables(relative_path, context)?;
 
             if let Some(relative_str) = substituted_path.to_str() {
@@ -236,7 +286,10 @@ fn validate_destination(
     }
 
     for static_file in &template_structure.static_files {
-        if let Some(relative_path) = template_structure.relative_paths.get(static_file) {
+        let file_path = static_file.path();
+        let path_str = file_path.to_str().unwrap_or("");
+
+        if let Some(relative_path) = template_structure.relative_paths.get(path_str) {
             let substituted_path = substitute_path_variables(relative_path, context)?;
 
             let dest_file = dest_path.join(substituted_path);
