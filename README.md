@@ -91,13 +91,13 @@ godust --name my_project_name --engine 4.5 --rendering-method "forward_plus"
 You can also explicitly specify the template (optional, since it defaults to "blank"):
 
 ```
-godust --name my_project_name --engine 4.4 --rendering-method "forward_plus" --template blank
+godust --name my_project_name --engine 4.5 --rendering-method "forward_plus" --template blank
 ```
 
 Or using the short form:
 
 ```
-godust -n my_project_name -e 4.4 -r "forward_plus" -t blank
+godust -n my_project_name -e 4.5 -r "forward_plus" -t blank
 ```
 
 Godust help:
