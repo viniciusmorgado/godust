@@ -73,7 +73,6 @@ However, if you need assistance with programming your game using Godot and Rust,
 
 Before getting started, please ensure you have the following installed:
 
-* Godot Engine and its command-line interface (Godot CLI) - [To setup Godot CLI click here.](https://github.com/viniciusmorgado/godust/blob/main/assets/setup_cli.md)
 * The Rust package manager, Cargo (which comes with a standard Rust installation) - [To install Rust and Cargo click here.](https://www.rust-lang.org/tools/install)
 
 ## How to use it
