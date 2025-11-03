@@ -2,11 +2,15 @@ mod generators;
 mod utils;
 
 use clap::Parser;
+use include_dir::{include_dir, Dir};
 use std::io;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 use crate::utils::project::Project;
 use crate::utils::template_parser;
+
+// Embed templates at compile time
+static TEMPLATES: Dir = include_dir!("$CARGO_MANIFEST_DIR/src/templates");
 
 #[derive(Parser, Debug)]
 #[command(version, about)]
@@ -25,28 +29,13 @@ struct Args {
     template: String,
 }
 
-/// Determines the runtime path to the template directory
+/// Gets the embedded template directory by name
 ///
-/// Templates are expected to be in a "templates" folder next to the executable.
-/// This works for both development (target/debug/templates) and production builds.
-fn determine_template_path(template_name: &str) -> Result<PathBuf, Box<dyn std::error::Error>> {
-    let exe_path = std::env::current_exe()?;
-    let exe_dir = exe_path
-        .parent()
-        .ok_or("Failed to get executable directory")?;
-
-    let template_path = exe_dir.join("templates").join(template_name);
-
-    if !template_path.exists() {
-        return Err(format!(
-            "Template '{}' not found at: {}\nEnsure templates are installed correctly (run make.sh to copy templates).",
-            template_name,
-            template_path.display()
-        )
-        .into());
-    }
-
-    Ok(template_path)
+/// Templates are embedded in the binary at compile time.
+fn get_embedded_template(template_name: &str) -> Result<&'static Dir<'static>, Box<dyn std::error::Error>> {
+    TEMPLATES
+        .get_dir(template_name)
+        .ok_or_else(|| format!("Template '{}' not found in embedded templates", template_name).into())
 }
 
 #[tokio::main]
@@ -129,8 +118,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
     };
 
-    // Determine template location
-    let template_path = determine_template_path(&args.template)?;
+    // Get embedded template
+    let template_dir = get_embedded_template(&args.template)?;
 
     // Get the root directory (kebab-case name)
     let kebab_name =
@@ -141,7 +130,34 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         "📝 Generating project files from '{}' template...",
         args.template
     );
-    template_parser::parse_template(&template_path, Path::new(&kebab_name), context)?;
+    template_parser::parse_template(template_dir, Path::new(&kebab_name), context)?;
+
+    // Build the Rust library automatically
+    println!("🔨 Building Rust library (this may take a moment)...");
+    let core_dir = Path::new(&kebab_name).join(format!("{}_core", args.name));
+
+    let build_result = tokio::process::Command::new("cargo")
+        .arg("build")
+        .current_dir(&core_dir)
+        .output()
+        .await;
+
+    match build_result {
+        Ok(output) => {
+            if output.status.success() {
+                println!("✅ Rust library built successfully!");
+            } else {
+                eprintln!("⚠️  Warning: Cargo build failed. You may need to run 'cargo build' manually.");
+                if !output.stderr.is_empty() {
+                    eprintln!("   Error: {}", String::from_utf8_lossy(&output.stderr));
+                }
+            }
+        }
+        Err(e) => {
+            eprintln!("⚠️  Warning: Could not run cargo build: {}", e);
+            eprintln!("   Please run 'cargo build' manually in {}_core/", args.name);
+        }
+    }
 
     // Success summary
     println!(

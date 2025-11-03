@@ -66,7 +66,7 @@ jobs:
             git checkout main
             git pull
             cargo clean
-            ./make.sh build --release
+            cargo build --release
           EOF
 
       - name: Copy artifacts from FreeBSD server
@@ -74,7 +74,6 @@ jobs:
         run: |
           mkdir -p freebsd-artifacts
           scp -i ~/.ssh/freebsd_key ${{ secrets.FREEBSD_USER }}@${{ secrets.FREEBSD_HOST }}:/root/repos/godust/target/release/godust freebsd-artifacts/
-          scp -i ~/.ssh/freebsd_key -r ${{ secrets.FREEBSD_USER }}@${{ secrets.FREEBSD_HOST }}:/root/repos/godust/target/release/templates freebsd-artifacts/
 
       - name: Setup Rust
         if: matrix.remote_build != true
@@ -106,11 +105,11 @@ jobs:
           tar czf ../../../godust-${{ matrix.target }}.tar.gz godust
           cd ../../..
 
-      - name: Package binary and templates (FreeBSD)
+      - name: Package binary (FreeBSD)
         if: matrix.remote_build == true
         run: |
           cd freebsd-artifacts
-          tar czf ../godust-${{ matrix.target }}.tar.gz godust templates
+          tar czf ../godust-${{ matrix.target }}.tar.gz godust
           cd ..
 
       - name: Package binary (Windows)

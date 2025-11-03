@@ -9,17 +9,17 @@ repository = "https://github.com/viniciusmorgado/godust"
 
 [dependencies]
 clap = { version = "4.5.50", features = ["derive"] }
+include_dir = "0.7"
 rand = "0.9.2"
 reqwest = { version = "0.12.24", features = ["json", "rustls-tls"], default-features = false }
 serde = { version = "1.0.228", features = ["derive"] }
 serde_json = "1.0.145"
 tera = "1.20.0"
-tokio = { version = "1.48.0", features = ["rt-multi-thread", "macros"] }
+tokio = { version = "1.48.0", features = ["rt-multi-thread", "macros", "process"] }
 walkdir = "2.5.0"
 
 [package.metadata.binstall]
 pkg-url = "{ repo }/releases/download/v{ version }/{ name }-{ target }{ archive-suffix }"
-bin-dir = "{ bin }{ binary-ext }"
 pkg-fmt = "tgz"
 
 [package.metadata.binstall.overrides.x86_64-pc-windows-msvc]
