@@ -132,6 +132,33 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     template_parser::parse_template(template_dir, Path::new(&kebab_name), context)?;
 
+    // Build the Rust library automatically
+    println!("🔨 Building Rust library (this may take a moment)...");
+    let core_dir = Path::new(&kebab_name).join(format!("{}_core", args.name));
+
+    let build_result = tokio::process::Command::new("cargo")
+        .arg("build")
+        .current_dir(&core_dir)
+        .output()
+        .await;
+
+    match build_result {
+        Ok(output) => {
+            if output.status.success() {
+                println!("✅ Rust library built successfully!");
+            } else {
+                eprintln!("⚠️  Warning: Cargo build failed. You may need to run 'cargo build' manually.");
+                if !output.stderr.is_empty() {
+                    eprintln!("   Error: {}", String::from_utf8_lossy(&output.stderr));
+                }
+            }
+        }
+        Err(e) => {
+            eprintln!("⚠️  Warning: Could not run cargo build: {}", e);
+            eprintln!("   Please run 'cargo build' manually in {}_core/", args.name);
+        }
+    }
+
     // Success summary
     println!(
         "\n✅ Successfully generated '{}' from template '{}'!",
