@@ -29,7 +29,7 @@ However, if you need assistance with programming your game using Godot and Rust,
 | Template | Status | Description |
 |----------|--------|-------------|
 | **Blank** | ✅ | Godot-rust and Godot setup ready to use. Default template when no template is selected. Provides minimal project structure to start building. |
-| **Blank + Bevy ECS** | 🚧 | Blank template integrated with Bevy's Entity Component System for enhanced game logic architecture and performance. |
+| **Blank + Bevy ECS** | ✅ | Blank template integrated with Bevy's Entity Component System for enhanced game logic architecture and performance. |
 | **Basic Hello World** | 📋 | Simple "Hello World" example demonstrating basic Godot-rust usage and core concepts. |
 | **Basic 3D Hello World** | 📋 | 3D scene with basic interaction example. Introduces 3D nodes, transforms, and spatial scripting. |
 | **Basic 2D Hello World** | 📋 | 2D scene with basic interaction example. Covers 2D nodes, sprites, and basic game mechanics. |
@@ -42,6 +42,25 @@ However, if you need assistance with programming your game using Godot and Rust,
 | **First Person** | 📋 | Complete first-person character controller with mouse look, WASD movement, and basic mechanics. |
 | **Top Down** | 📋 | Full top-down game template with camera, movement, and common gameplay patterns. |
 | **Vehicle** | 📋 | Complete vehicle physics and controls template with driving mechanics and camera systems. |
+
+## Mobile Templates
+
+| Template | Status | Description |
+|----------|--------|-------------|
+| **Android Basic** | 📋 | Android-optimized template with proper export settings, touch controls, and mobile performance configurations. |
+| **iOS Basic** | 📋 | iOS-optimized template with proper export settings, touch controls, and Apple-specific requirements. |
+| **Cross-Platform Mobile** | 📋 | Universal mobile template supporting both Android and iOS with adaptive controls and performance optimizations. |
+
+## CI/CD & Deployment Templates
+
+| Template | Status | Description |
+|----------|--------|-------------|
+| **GitHub Actions - Desktop** | 📋 | Complete GitHub Actions workflow for building and releasing desktop games (Windows, Linux, macOS). |
+| **GitHub Actions - Mobile** | 📋 | GitHub Actions workflow for building and deploying Android/iOS games with automated signing and store upload. |
+| **Azure DevOps - Desktop** | 📋 | Azure DevOps pipeline for building and releasing desktop games across multiple platforms. |
+| **Azure DevOps - Mobile** | 📋 | Azure DevOps pipeline for mobile game deployment with automated testing and store publishing. |
+| **GitHub Actions - Web** | 📋 | Workflow for building and deploying Godot games to web (HTML5/WASM) with GitHub Pages integration. |
+| **Azure DevOps - Web** | 📋 | Azure pipeline for web game builds and deployment to various hosting platforms. |
 
 ---
 
@@ -92,7 +111,7 @@ Options:
   -n, --name <NAME>                          Project name
   -e, --engine <ENGINE>                      Engine version
   -r, --rendering-method <RENDERING_METHOD>  Render method (forward_plus, gl_compatibility, mobile)
-  -t, --template <TEMPLATE>                  Template (available: blank) [default: blank]
+  -t, --template <TEMPLATE>                  Template (available: blank, blank_ecs) [default: blank]
   -h, --help                                 Print help
   -V, --version                              Print version
 ```
@@ -110,24 +129,16 @@ Successfully created Godot project 'my_project_name'...
 ```
 ## Running Your Project
 
-After generating your Godot-Rust project, there are a couple of essential steps before you can run it in the Godot editor:
+After generating your Godot-Rust project with Godust, the Rust library is automatically built during project creation. You can immediately open your project in the Godot editor:
 
-1. **Build the Rust project**: Navigate into the core of your new project where the Cargo.toml file is located. This will typically be at my_project_name/my_project_name_core. Once there, run the following command to build your Rust code:
-```
-cargo build
-```
-Note: For a production build you will compile using ``` cargo build --release ```.
+**Open in Godot Engine**: The Godot project file (project.godot) is located in `my_project_name/my_project_name/project.godot`. Open the Godot editor and import this project.
 
-This command compiles your Rust code, making it ready for Godot to use.
-
-2. **Open in Godot Engine**: Once the Rust build is complete, you can open and import your Godot project. The Godot project file (project.godot) is located in my_project_name/my_project_name/project.godot. Open the Godot editor and import this project.
-
-![Importing project.godot in Godot editor screen](https://github.com/viniciusmorgado/godust/blob/main/assets/importing_project.png)
+**Note**: The initial Rust build (debug mode) is performed automatically when you create the project. If you make changes to the Rust code later, you'll need to rebuild:
+- For development: `cd my_project_name_core && cargo build`
+- For production/release: `cd my_project_name_core && cargo build --release`
 
 Even though the template generation process customizes the name of the core project (the Rust part of the project), which is different from the default defined in the [godot-rust book HelloWorld tutorial](https://godot-rust.github.io/book/intro/hello-world.html), the overall structure still needs to respect the same layout.
 
 ## License
 
 This project is licensed under the [MIT License](https://github.com/viniciusmorgado/godust/blob/main/LICENSE).
-
-- versioning test
