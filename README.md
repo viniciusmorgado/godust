@@ -118,14 +118,25 @@ Options:
 Everything works well if you see something like this:
 
 ```
-Successfully created project structure for 'my_project_name'...
-Successfully created Rust project 'my_project_name_core'...
-Successfully created Godot project 'my_project_name'...
-- Godot project name: my_project_name
-- Rust project name: my_project_name_core
-- Engine version: 4.4
-- Rendering method: forward_plus
+✅ Successfully created project structure for 'my_project_name'...
+🔨 Building template context...
+📝 Generating project files from 'blank_ecs' template...
+🔨 Building Rust library (this may take a moment)...
+✅ Rust library built successfully!
+
+✅ Successfully generated 'my_project_name' from template 'blank_ecs'!
+
+📁 Project structure:
+   my-project-name/
+   ├── my-project-name/          (Godot project)
+   └── my_project_name_core/     (Rust library)
+
+💡 Next steps:
+   cd my-project-name
+   cd my_project_name_core && cargo build
+   Open my-project-name in Godot Editor
 ```
+
 ## Running Your Project
 
 After generating your Godot-Rust project with Godust, the Rust library is automatically built during project creation. You can immediately open your project in the Godot editor:
