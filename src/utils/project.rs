@@ -57,12 +57,7 @@ impl Project {
         Ok(())
     }
 
-    pub fn set_rendering_method(&mut self, identifier: &str) {
-        self.rendering_method.method = Self::format_rendering_method(identifier);
-        self.rendering_method.identifier = identifier.to_string();
-    }
-
-    fn format_rendering_method(identifier: &str) -> String {
+    pub fn format_rendering_method(identifier: &str) -> String {
         match identifier {
             "forward_plus" => "Forward Plus".to_string(),
             "gl_compatibility" => "GL Compatibility".to_string(),
