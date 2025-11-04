@@ -1,6 +1,6 @@
 [package]
 name = "godust"
-version = "0.0.6"
+version = "0.1.0"
 edition = "2024"
 description = "Godust - CLI tool for Godot Engine template generation"
 authors = ["contato.viniciusdonatto@gmail.com"]
