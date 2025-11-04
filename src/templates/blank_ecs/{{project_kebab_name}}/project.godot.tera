@@ -1,0 +1,11 @@
+config_version=5
+
+[application]
+
+config/name="{{ project_kebab_name }}"
+config/features=PackedStringArray("{{ engine_version }}", "{{ rendering_method_formatted }}")
+config/icon="res://icon.svg"
+
+[rendering]
+
+renderer/rendering_method="{{ rendering_method }}"

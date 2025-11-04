@@ -10,7 +10,26 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+
+      - name: Run tests
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+          args: --all-features
+
   build:
+    needs: test
     name: Build ${{ matrix.target }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -41,11 +60,42 @@ jobs:
           - target: aarch64-pc-windows-msvc
             os: windows-latest
             archive: zip
+          # FreeBSD x86_64 (remote build)
+          - target: x86_64-unknown-freebsd
+            os: ubuntu-latest
+            archive: tar.gz
+            remote_build: true
 
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup SSH for FreeBSD remote build
+        if: matrix.remote_build == true
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.FREEBSD_SSH_KEY }}" > ~/.ssh/freebsd_key
+          chmod 600 ~/.ssh/freebsd_key
+          ssh-keyscan -H ${{ secrets.FREEBSD_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Build on FreeBSD remote server
+        if: matrix.remote_build == true
+        run: |
+          ssh -i ~/.ssh/freebsd_key ${{ secrets.FREEBSD_USER }}@${{ secrets.FREEBSD_HOST }} << 'EOF'
+            cd /root/repos/godust
+            git checkout main
+            git pull
+            cargo clean
+            cargo build --release
+          EOF
+
+      - name: Copy artifacts from FreeBSD server
+        if: matrix.remote_build == true
+        run: |
+          mkdir -p freebsd-artifacts
+          scp -i ~/.ssh/freebsd_key ${{ secrets.FREEBSD_USER }}@${{ secrets.FREEBSD_HOST }}:/root/repos/godust/target/release/godust freebsd-artifacts/
+
       - name: Setup Rust
+        if: matrix.remote_build != true
         uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
@@ -59,6 +109,7 @@ jobs:
           sudo apt-get install -y gcc-aarch64-linux-gnu
 
       - name: Build release binary
+        if: matrix.remote_build != true
         uses: actions-rs/cargo@v1
         with:
           command: build
@@ -67,11 +118,18 @@ jobs:
           CARGO_TARGET_AARCH64_UNKNOWN_LINUX_GNU_LINKER: aarch64-linux-gnu-gcc
 
       - name: Package binary (Unix)
-        if: matrix.archive == 'tar.gz'
+        if: matrix.archive == 'tar.gz' && matrix.remote_build != true
         run: |
           cd target/${{ matrix.target }}/release
           tar czf ../../../godust-${{ matrix.target }}.tar.gz godust
           cd ../../..
+
+      - name: Package binary (FreeBSD)
+        if: matrix.remote_build == true
+        run: |
+          cd freebsd-artifacts
+          tar czf ../godust-${{ matrix.target }}.tar.gz godust
+          cd ..
 
       - name: Package binary (Windows)
         if: matrix.archive == 'zip'
@@ -163,6 +221,7 @@ jobs:
             - **Linux**: x86_64, ARM64 (aarch64)
             - **macOS**: x86_64 (Intel), ARM64 (Apple Silicon)
             - **Windows**: x86_64, ARM64
+            - **FreeBSD**: x86_64
           draft: false
           prerelease: false
         env:

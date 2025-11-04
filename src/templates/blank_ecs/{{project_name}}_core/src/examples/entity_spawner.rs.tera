@@ -1,0 +1,48 @@
+use bevy_ecs::prelude::*;
+use godot::classes::INode2D;
+use godot::prelude::*;
+
+#[derive(Component)]
+struct Position(f32, f32);
+
+#[derive(GodotClass)]
+#[class(base=Node2D)]
+pub struct EntitySpawner {
+    world: World,
+    base: Base<Node2D>,
+}
+
+#[godot_api]
+impl INode2D for EntitySpawner {
+    fn init(base: Base<Node2D>) -> Self {
+        let mut world = World::new();
+
+        for i in 0..20_000 {
+            let x = (i % 200) as f32 * 10.0;
+            let y = (i / 200) as f32 * 10.0;
+            world.spawn(Position(x, y));
+        }
+
+        godot_print!("Godot + Bevy ECS");
+        godot_print!(
+            "Spawned {} entities",
+            world.query::<&Position>().iter(&world).count()
+        );
+
+        Self { world, base }
+    }
+
+    fn draw(&mut self) {
+        let positions: Vec<(f32, f32)> = self
+            .world
+            .query::<&Position>()
+            .iter(&self.world)
+            .map(|pos| (pos.0, pos.1))
+            .collect();
+
+        for (x, y) in positions {
+            self.base_mut()
+                .draw_circle(Vector2::new(x, y), 2.0, Color::from_rgb(1.0, 0.0, 0.0));
+        }
+    }
+}

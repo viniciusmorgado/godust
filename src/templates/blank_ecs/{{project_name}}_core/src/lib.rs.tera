@@ -1,0 +1,8 @@
+use godot::prelude::*;
+
+mod examples;
+
+struct {{ struct_name }};
+
+#[gdextension]
+unsafe impl ExtensionLibrary for {{ struct_name }} {}

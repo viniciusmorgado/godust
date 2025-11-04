@@ -137,12 +137,12 @@ pub fn split_into_pascal_case(name: &String, detected_casing: Casing) -> String 
         .collect()
 }
 
-pub fn split_into_kebab_case(name: &String, detected_casing: Casing) -> String {
+pub fn split_into_kebab_case(name: &str, detected_casing: Casing) -> String {
     if detected_casing == Casing::Undefined {
         return name.to_owned();
     }
 
-    let words = get_words_from_name(name.as_str(), detected_casing);
+    let words = get_words_from_name(name, detected_casing);
     words
         .into_iter()
         .map(|word| to_all_lowercase(&word))
