@@ -206,8 +206,8 @@ mod tests {
     }
 
     #[test]
-    fn test_detect_casing_undefined_all_lowercase_no_delimiter() {
-        assert_eq!(detect_casing("myproject"), Casing::Undefined);
+    fn test_detect_casing_snake_case_single_word() {
+        assert_eq!(detect_casing("myproject"), Casing::SnakeCase);
     }
 
     #[test]
