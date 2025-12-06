@@ -79,15 +79,13 @@ Before getting started, please ensure you have the following installed:
 
 To generate the template:
 
-Note: For now, we only have the "blank" template available. The `-t` (or `--template`) parameter is optional and defaults to "blank". When new templates are available, you can use this parameter to choose them.
-
 To use the blank template you need to define the engine version, render method and the project name:
 
 ```
 godust --name my_project_name --engine 4.5 --rendering-method "forward_plus"
 ```
 
-You can also explicitly specify the template (optional, since it defaults to "blank"):
+You can also explicitly specify the template (optional, since it defaults to "blank" when not provided a template):
 
 ```
 godust --name my_project_name --engine 4.5 --rendering-method "forward_plus" --template blank
