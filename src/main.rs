@@ -2,7 +2,7 @@ mod generators;
 mod utils;
 
 use clap::Parser;
-use include_dir::{include_dir, Dir};
+use include_dir::{Dir, include_dir};
 use std::io;
 use std::path::Path;
 
@@ -32,10 +32,16 @@ struct Args {
 /// Gets the embedded template directory by name
 ///
 /// Templates are embedded in the binary at compile time.
-fn get_embedded_template(template_name: &str) -> Result<&'static Dir<'static>, Box<dyn std::error::Error>> {
-    TEMPLATES
-        .get_dir(template_name)
-        .ok_or_else(|| format!("Template '{}' not found in embedded templates", template_name).into())
+fn get_embedded_template(
+    template_name: &str,
+) -> Result<&'static Dir<'static>, Box<dyn std::error::Error>> {
+    TEMPLATES.get_dir(template_name).ok_or_else(|| {
+        format!(
+            "Template '{}' not found in embedded templates",
+            template_name
+        )
+        .into()
+    })
 }
 
 #[tokio::main]
@@ -147,7 +153,9 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             if output.status.success() {
                 println!("✅ Rust library built successfully!");
             } else {
-                eprintln!("⚠️  Warning: Cargo build failed. You may need to run 'cargo build' manually.");
+                eprintln!(
+                    "⚠️  Warning: Cargo build failed. You may need to run 'cargo build' manually."
+                );
                 if !output.stderr.is_empty() {
                     eprintln!("   Error: {}", String::from_utf8_lossy(&output.stderr));
                 }
@@ -155,7 +163,10 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
         Err(e) => {
             eprintln!("⚠️  Warning: Could not run cargo build: {}", e);
-            eprintln!("   Please run 'cargo build' manually in {}_core/", args.name);
+            eprintln!(
+                "   Please run 'cargo build' manually in {}_core/",
+                args.name
+            );
         }
     }
 
