@@ -4,7 +4,9 @@ Godust is a CLI tool that generates [Godot Engine](https://godotengine.org/) pro
 
 The [godot-rust](https://godot-rust.github.io/) library is a pure Rust implementation of the GDExtension bindings. This means you can write code in Rust that's equivalent to what you'd typically use GDScript or C# for in Godot.
 
-A key advantage is that because your game project is fundamentally a Rust project, you can easily integrate other Rust tools and libraries. For example, you can incorporate [Bevy Engine](https://bevy.org/) packages, or use [Vulkano](https://crates.io/crates/vulkano) and [Ash](https://crates.io/crates/ash) for Vulkan graphics code. We're planning future templates that will include pre-built scripts for common features, incorporating Bevy ECS templates, among others.
+A key advantage is that because your game project is fundamentally a Rust project, you can easily integrate other Rust tools and libraries. Beyond that, Rust's maintainability and ergonomics are a major benefit compared to GDScript, especially as projects grow.
+
+Godust is opinionated about how templates are structured. The default layout favors a "vertical slice" approach where features like a splash screen or menu live in Rust modules with matching names, so the codebase stays easy to navigate for both new and experienced developers. Another opinionated choice is to expose any values that can be adjusted in the Godot editor instead of hard-coding them in Rust. While GDScript can be edited directly in the editor, Rust cannot, so exposing properties avoids unnecessary code changes and recompiles when you are tweaking simple 2D or 3D gameplay values during iteration.
 
 ## Where to Find Help?
 
@@ -24,50 +26,20 @@ However, if you need assistance with programming your game using Godot and Rust,
 
 # Templates Roadmap
 
-## Basic Templates
+## Templates
 
 | Template | Status | Description |
 |----------|--------|-------------|
 | **Blank** | ✅ | Godot-rust and Godot setup ready to use. Default template when no template is selected. Provides minimal project structure to start building. |
 | **Blank + Bevy ECS** | ✅ | Blank template integrated with Bevy's Entity Component System for enhanced game logic architecture and performance. |
-| **Basic Hello World** | 📋 | Simple "Hello World" example demonstrating basic Godot-rust usage and core concepts. |
-| **Basic 3D Hello World** | 📋 | 3D scene with basic interaction example. Introduces 3D nodes, transforms, and spatial scripting. |
-| **Basic 2D Hello World** | 📋 | 2D scene with basic interaction example. Covers 2D nodes, sprites, and basic game mechanics. |
-
-## Full Templates
-
-| Template | Status | Description |
-|----------|--------|-------------|
-| **Third Person** | 📋 | Complete third-person character controller with camera, movement, and interaction systems. |
-| **First Person** | 📋 | Complete first-person character controller with mouse look, WASD movement, and basic mechanics. |
-| **Top Down** | 📋 | Full top-down game template with camera, movement, and common gameplay patterns. |
-| **Vehicle** | 📋 | Complete vehicle physics and controls template with driving mechanics and camera systems. |
-
-## Mobile Templates
-
-| Template | Status | Description |
-|----------|--------|-------------|
-| **Android Basic** | 📋 | Android-optimized template with proper export settings, touch controls, and mobile performance configurations. |
-| **iOS Basic** | 📋 | iOS-optimized template with proper export settings, touch controls, and Apple-specific requirements. |
-| **Cross-Platform Mobile** | 📋 | Universal mobile template supporting both Android and iOS with adaptive controls and performance optimizations. |
-
-## CI/CD & Deployment Templates
-
-| Template | Status | Description |
-|----------|--------|-------------|
-| **GitHub Actions - Desktop** | 📋 | Complete GitHub Actions workflow for building and releasing desktop games (Windows, Linux, macOS). |
-| **GitHub Actions - Mobile** | 📋 | GitHub Actions workflow for building and deploying Android/iOS games with automated signing and store upload. |
-| **Azure DevOps - Desktop** | 📋 | Azure DevOps pipeline for building and releasing desktop games across multiple platforms. |
-| **Azure DevOps - Mobile** | 📋 | Azure DevOps pipeline for mobile game deployment with automated testing and store publishing. |
-| **GitHub Actions - Web** | 📋 | Workflow for building and deploying Godot games to web (HTML5/WASM) with GitHub Pages integration. |
-| **Azure DevOps - Web** | 📋 | Azure pipeline for web game builds and deployment to various hosting platforms. |
+| **Third Person** | 🚧 | Complete third-person character controller with camera, movement, and interaction systems. |
+| **First Person** | 🚧 | Complete first-person character controller with mouse look, WASD movement, and basic mechanics. |
 
 ---
 
 **Status Legend:**
 - ✅ **Complete** - Ready to use
 - 🚧 **In Progress** - Currently being developed
-- 📋 **Planned** - Scheduled for future development
 
 ## Pre-requisites
 
@@ -82,19 +54,19 @@ To generate the template:
 To use the blank template you need to define the engine version, render method and the project name:
 
 ```
-godust --name my_project_name --engine 4.5 --rendering-method "forward_plus"
+godust --name my_project_name --engine 4.6 --rendering-method "forward_plus"
 ```
 
 You can also explicitly specify the template (optional, since it defaults to "blank" when not provided a template):
 
 ```
-godust --name my_project_name --engine 4.5 --rendering-method "forward_plus" --template blank
+godust --name my_project_name --engine 4.6 --rendering-method "forward_plus" --template blank
 ```
 
 Or using the short form:
 
 ```
-godust -n my_project_name -e 4.5 -r "forward_plus" -t blank
+godust -n my_project_name -e 4.6 -r "forward_plus" -t blank
 ```
 
 Godust help:
