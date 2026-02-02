@@ -1,0 +1,25 @@
+use godot::classes::class_macros::private::virtuals::Os::Vector2i;
+
+pub const RES_800_600: Vector2i = Vector2i { x: 800, y: 600 };
+pub const RES_1024_768: Vector2i = Vector2i { x: 1024, y: 768 };
+pub const RES_1152_864: Vector2i = Vector2i { x: 1152, y: 864 };
+pub const RES_1176_664: Vector2i = Vector2i { x: 1176, y: 664 };
+pub const RES_1280_720: Vector2i = Vector2i { x: 1280, y: 720 };
+pub const RES_1280_768: Vector2i = Vector2i { x: 1280, y: 768 };
+pub const RES_1280_800: Vector2i = Vector2i { x: 1280, y: 800 };
+pub const RES_1280_960: Vector2i = Vector2i { x: 1280, y: 960 };
+pub const RES_1280_1024: Vector2i = Vector2i { x: 1280, y: 1024 };
+pub const RES_1360_768: Vector2i = Vector2i { x: 1360, y: 768 };
+pub const RES_1366_768: Vector2i = Vector2i { x: 1366, y: 768 };
+pub const RES_1440_900: Vector2i = Vector2i { x: 1440, y: 900 };
+pub const RES_1440_1080: Vector2i = Vector2i { x: 1440, y: 1080 };
+pub const RES_1600_900: Vector2i = Vector2i { x: 1600, y: 900 };
+pub const RES_1600_1024: Vector2i = Vector2i { x: 1600, y: 1024 };
+pub const RES_1680_1050: Vector2i = Vector2i { x: 1680, y: 1050 };
+pub const RES_1920_1080: Vector2i = Vector2i { x: 1920, y: 1080 };
+pub const RES_2103_1183: Vector2i = Vector2i { x: 2103, y: 1183 };
+pub const RES_2351_1323: Vector2i = Vector2i { x: 2351, y: 1323 };
+pub const RES_2560_1440: Vector2i = Vector2i { x: 2560, y: 1440 };
+pub const RES_2715_1527: Vector2i = Vector2i { x: 2715, y: 1527 };
+pub const RES_2880_1620: Vector2i = Vector2i { x: 2880, y: 1620 };
+pub const RES_3325_1871: Vector2i = Vector2i { x: 3325, y: 1871 };

@@ -1,14 +1,9 @@
-pub fn add(left: u64, right: u64) -> u64 {
-    left + right
-}
+use godot::classes::class_macros::private::virtuals::Os::Vector2i;
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+mod constants;
+mod utils;
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
-    }
-}
+// pub fn splash_screen_logo_get_size(input_resolution: Vector2i) -> Option<Vector2i> {
+//     let resolution_map = utils::create_resolution_map();
+//     resolution_map.get(&Vector2iKey(input_resolution)).copied()
+// }
