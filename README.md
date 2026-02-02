@@ -8,6 +8,8 @@ A key advantage is that because your game project is fundamentally a Rust projec
 
 Godust is opinionated about how templates are structured. The default layout favors a "vertical slice" approach where features like a splash screen or menu live in Rust modules with matching names, so the codebase stays easy to navigate for both new and experienced developers. Another opinionated choice is to expose any values that can be adjusted in the Godot editor instead of hard-coding them in Rust. While GDScript can be edited directly in the editor, Rust cannot, so exposing properties avoids unnecessary code changes and recompiles when you are tweaking simple 2D or 3D gameplay values during iteration.
 
+You can still use GDScript and Rust together in the same project, and if you are using the .NET build of Godot, C# as well. A common approach is to prototype everything in GDScript, and re-write in Rust after you achive your goal with that module. Another common approach is to prototype everything in GDScript, rewrite most parts in Rust, and use C# for components that benefit from a more robust reflection system.
+
 ## Where to Find Help?
 
 If you encounter problems or have suggestions for the CLI itself, including ideas for new templates, changes, or bug fixes, please [open an issue](https://github.com/viniciusmorgado/godust). Feel free to submit pull requests (PRs) for any changes or improvements you'd like to contribute.
@@ -118,6 +120,20 @@ After generating your Godot-Rust project with Godust, the Rust library is automa
 - For production/release: `cd my_project_name_core && cargo build --release`
 
 Even though the template generation process customizes the name of the core project (the Rust part of the project), which is different from the default defined in the [godot-rust book HelloWorld tutorial](https://godot-rust.github.io/book/intro/hello-world.html), the overall structure still needs to respect the same layout.
+
+## Contributing
+
+Contributions are welcome. Please open an issue for bugs or feature ideas, then submit a pull request against `main`.
+
+### PR naming and versioning
+
+The release workflow derives the next version from commit messages on `main`. To ensure your change bumps the correct version, use a squash merge with a PR title that matches one of these prefixes:
+
+- `BREAKING CHANGE:` for a major bump
+- `feat:` for a minor bump
+- `fix:` (or any other prefix) for a patch bump
+
+If you use multiple commits, keep the PR title aligned with the intended version bump since squash merges use the PR title as the commit message.
 
 ## License
 
