@@ -144,13 +144,14 @@ pub fn parse_template(
     Ok(())
 }
 
-fn discover_template_structure<'a>(template_dir: &'a Dir<'a>) -> Result<TemplateStructure<'a>, io::Error> {
+fn discover_template_structure<'a>(template_dir: &'a Dir<'a>)
+        -> Result<TemplateStructure<'a>, io::Error> {
     let mut tera_files = Vec::new();
     let mut static_files = Vec::new();
     let mut relative_paths = HashMap::new();
 
     // Get the base path that we need to strip from all file paths
-    // This is the template directory name (e.g., "blank" or "blank_ecs")
+    // This is the template directory name (e.g., "minimal" or "ecs")
     let base_prefix = template_dir.path();
 
     // Recursively traverse embedded directory

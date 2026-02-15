@@ -1,0 +1,98 @@
+use godot::{
+    classes::{Control, IControl, Object, PackedScene, TextureRect},
+    meta::ToGodot,
+    obj::{Base, Gd, OnEditor, WithBaseField},
+    prelude::*,
+};
+
+#[derive(GodotClass)]
+#[class(base = Control)]
+pub struct SplashScreen {
+    /// The scene that will be loaded after the splash screen finishes.
+    #[export] next_scene: OnEditor<Gd<PackedScene>>,
+
+    /// The logo or image to display during the splash screen animation.
+    #[export] logo: OnEditor<Gd<TextureRect>>,
+
+    /// Initial delay before starting the fade-in animation (in seconds).
+    #[export] in_time: f64,
+
+    /// Duration of the logo fade-in effect (in seconds).
+    #[export] fade_in_time: f64,
+
+    /// How long the logo stays fully visible before starting to fade out (in seconds).
+    #[export] pause_time: f64,
+
+    /// Duration of the logo fade-out effect (in seconds).
+    #[export] fade_out_time: f64,
+
+    /// Delay after fade-out before changing to the next scene (in seconds).
+    #[export] out_time: f64,
+
+    /// Starting transparency of the logo (0.0 = fully transparent, 1.0 = fully opaque).
+    #[export] initial_alpha: f32,
+
+    base: Base<Control>,
+}
+
+#[godot_api]
+impl IControl for SplashScreen {
+    fn init(base: Base<Control>) -> Self {
+        Self {
+            base,
+            next_scene: OnEditor::default(),
+            logo: OnEditor::default(),
+            in_time: 0.5,
+            fade_in_time: 1.5,
+            pause_time: 1.5,
+            fade_out_time: 1.5,
+            out_time: 0.5,
+            initial_alpha: 0.0,
+        }
+    }
+
+    fn ready(&mut self) {
+        self.fate();
+    }
+}
+
+impl SplashScreen {
+    fn fate(&mut self) -> () {
+        let next_scene: Gd<PackedScene> = (*self.next_scene).clone();
+        let mut splash_screen: Gd<TextureRect> = (*&self.logo).clone();
+        let scene_tree = self.base().get_tree();
+        let mut logo_color = self.base().get_modulate();
+
+        logo_color.a = self.initial_alpha;
+        splash_screen.set_modulate(logo_color);
+
+        if let Some(mut tween) = splash_screen.create_tween() {
+            let fade_in_target = 1.0_f64.to_variant();  // alfa → 1.0 (opaco)
+            let fade_out_target = 0.0_f64.to_variant(); // alfa → 0.0 (transparente)
+            let splash_screen_obj = splash_screen.upcast::<Object>();
+
+            tween.tween_interval(self.in_time);
+            tween.tween_property(
+                &splash_screen_obj,
+                "modulate:a",
+                &fade_in_target,
+                self.fade_in_time,
+            );
+            tween.tween_interval(self.pause_time);
+            tween.tween_property(
+                &splash_screen_obj,
+                "modulate:a",
+                &fade_out_target,
+                self.fade_out_time,
+            );
+            tween.tween_interval(self.out_time);
+
+            godot::task::spawn(async move {
+                tween.signals().finished().to_future().await;
+                if let Some(mut tree) = scene_tree {
+                    tree.change_scene_to_packed(&next_scene);
+                }
+            });
+        }
+    }
+}

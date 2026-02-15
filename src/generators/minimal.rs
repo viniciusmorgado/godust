@@ -3,12 +3,11 @@ use tera::Context;
 
 use crate::utils::{crates_version, naming};
 
-/// Builds the Tera Context for the "blank_ecs" template
+/// Builds the Tera Context for the "minimal" template
 ///
-/// This template creates a Godot + Rust + Bevy ECS project with:
-/// - Cargo.toml with godot and bevy_ecs dependencies
-/// - lib.rs with GDExtension setup and examples module
-/// - EntitySpawner example demonstrating Bevy ECS integration with Godot
+/// This template creates a basic Godot + Rust project with:
+/// - Cargo.toml with godot dependency
+/// - Basic lib.rs with GDExtension setup
 /// - Godot project files (project.godot, extension.gdextension, Main.tscn, icon.svg)
 ///
 /// # Arguments
@@ -30,23 +29,19 @@ pub async fn build_context(
     // Derive name variations
     let detected_casing = naming::detect_casing(project_name);
     let kebab_name = naming::split_into_kebab_case(project_name, detected_casing);
-    let pascal_name = naming::split_into_pascal_case(&project_name.to_string(), detected_casing);
+    let pascal_name = naming::split_into_pascal_case( &project_name.to_string()
+                                                           , detected_casing );
 
-    // Fetch latest crate versions from crates.io
+    // Fetch latest godot crate version from crates.io
     let godot_version = crates_version::get_crate_version("godot")
         .await
         .unwrap_or_else(|_| "0.1.0".to_string()); // Fallback if crates.io is unreachable
-
-    let bevy_ecs_version = crates_version::get_crate_version("bevy_ecs")
-        .await
-        .unwrap_or_else(|_| "0.14.0".to_string()); // Fallback if crates.io is unreachable
 
     // Insert all template variables
     context.insert("project_name", project_name);
     context.insert("project_kebab_name", &kebab_name);
     context.insert("struct_name", &pascal_name);
     context.insert("godot_version", &godot_version);
-    context.insert("bevy_ecs_version", &bevy_ecs_version);
     context.insert("engine_version", engine_version);
     context.insert("rendering_method", rendering_method);
     context.insert("rendering_method_formatted", rendering_method_formatted);

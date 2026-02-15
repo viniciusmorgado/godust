@@ -1,0 +1,52 @@
+use godot::prelude::*;
+use godot::classes::Engine;
+
+mod splash_screen;
+
+struct {{ struct_name }};
+
+#[gdextension]
+unsafe impl ExtensionLibrary for {{ struct_name }} {
+    fn on_stage_init(stage: InitStage) {
+        if stage == InitStage::Core {
+            let version_dict = Engine::singleton().get_version_info();
+
+            fn variant_to_i64(v: Variant) -> i64 {
+                let txt = v.to_string();
+                txt.parse::<i64>().unwrap_or(0)
+            }
+
+            let major = version_dict
+                .get("major")
+                .map(variant_to_i64)
+                .unwrap_or(0);
+            let minor = version_dict
+                .get("minor")
+                .map(variant_to_i64)
+                .unwrap_or(0);
+
+            // Verify if the engine version matches the minimum required by godot-rust bindings.
+            if major > 4 || (major == 4 && minor >= 2) {
+                godot_print!("✅ Godot version {major}.{minor} – compatible (minimum 4.2).");
+            } else {
+                godot_print!(
+                    "⚠️ Godot version {major}.{minor} detected – extension requires at least 4.2"
+                );
+            }
+
+            godot_print!("godot‑rust load successfully! (stage = Core)");
+        }
+
+        if stage == InitStage::MainLoop {
+            godot_print!("godot‑rust fully initialized – MainLoop stage reached.");
+        }
+    }
+
+    // Can be used to release resources, unregister callbacks,
+    // or perform any other cleanup that must happen before the engine unloads the extension.
+    fn on_stage_deinit(stage: InitStage) {
+        if stage == InitStage::MainLoop {
+            godot_print!("godot‑rust shutting down…");
+        }
+    }
+}

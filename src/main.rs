@@ -24,8 +24,8 @@ struct Args {
     /// Render method (forward_plus, gl_compatibility, mobile)
     #[arg(short, long)]
     rendering_method: String,
-    /// Template (available: blank, blank_ecs)
-    #[arg(short, long, default_value = "blank")]
+    /// Template (available: minimal, ecs, default)
+    #[arg(short, long, default_value = "default")]
     template: String,
 }
 
@@ -60,7 +60,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     // Validate template exists
-    let available_templates = vec!["blank", "blank_ecs"];
+    let available_templates = vec!["minimal", "ecs", "default"];
     if !available_templates.contains(&args.template.as_str()) {
         eprintln!("Error: Template '{}' is not supported.", args.template);
         eprintln!("Available templates: {}", available_templates.join(", "));
@@ -87,7 +87,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 }
                 io::ErrorKind::AlreadyExists => {
                     eprintln!(
-                        "Directory already exists. Please choose a different name or remove the existing directory."
+                        "Directory already exists. Please choose a different name or remove \
+                        the existing directory."
                     );
                 }
                 _ => {
@@ -101,8 +102,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Build context using appropriate generator based on template
     println!("🔨 Building template context...");
     let context = match args.template.as_str() {
-        "blank" => {
-            generators::blank::build_context(
+        "minimal" => {
+            generators::minimal::build_context(
                 &args.name,
                 &args.engine,
                 &args.rendering_method,
@@ -110,8 +111,17 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
             )
             .await?
         }
-        "blank_ecs" => {
-            generators::blank_ecs::build_context(
+        "ecs" => {
+            generators::ecs::build_context(
+                &args.name,
+                &args.engine,
+                &args.rendering_method,
+                &Project::format_rendering_method(&args.rendering_method),
+            )
+            .await?
+        }
+        "default" => {
+            generators::default::build_context(
                 &args.name,
                 &args.engine,
                 &args.rendering_method,
