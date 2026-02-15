@@ -30,8 +30,8 @@ You can still use GDScript and Rust together in the same project, and if you are
 
 | Template                 | Status |
 |--------------------------|--------|
-| **Minimal**              | ✅     | 
-| **Default**              | ✅     | 
+| **Minimal**              | ✅     |
+| **Default**              | ✅     |
 | **ECS**                  | ✅     |
 | **Third Person**         | 🚧     |
 | **First Person**         | 📋     |
