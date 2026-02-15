@@ -1,52 +1,48 @@
 ## Latest Update
 
-- Replace minimal blank template as default option by the new "default" template. Blank remains available but need to be explicitly invoke.
-- Upgrade recommended version to Godot 4.6, and minimal to 4.2
-- Add new version of Default template, build on top of blank with new sensible defaults.
+- The blank and blank_ecs templates now are called minimal and ecs respectively to avoid confusion.
+- Add new template called "default", built on top of minimal (old blank) template but with sensible defaults.
+- Upgrade recommended version to Godot 4.6, and minimum to 4.2.
+- The new default template already contains a splash_screen component, but new sensible defaults are under development.
 
 # Godust
 
-Godust is opinionated CLI tool that generates [Godot Engine](https://godotengine.org/) project templates in Rust, specifically using the godot-rust library (GDExtension bindings for Rust).
+Godust is an opinionated CLI tool that generates [Godot Engine](https://godotengine.org/) project templates in Rust, specifically using the godot-rust library (GDExtension bindings for Rust).
 
 The [godot-rust](https://godot-rust.github.io/) library is a pure Rust implementation of the GDExtension bindings. This means you can write code in Rust that's equivalent to what you'd typically use GDScript or C# for in Godot.
 
-A key advantage is that because your game project is fundamentally a Rust project, you can easily integrate other Rust tools and libraries. Beyond that, Rust's maintainability and ergonomics are a major benefit compared to GDScript, especially as projects grow.
+A key advantage is that because your game project is fundamentally a Rust project, you can easily integrate other Rust tools and libraries. Beyond that, Rust's maintainability and ergonomics are a major benefits compared to GDScript, especially as projects grow.
 
 Godust is opinionated about how templates are structured. The default layout favors a "vertical slice" approach where features like a splash screen or menu live in Rust modules with matching names, so the codebase stays easy to navigate for both new and experienced developers. Another opinionated choice is to expose any values that can be adjusted in the Godot editor instead of hard-coding them in Rust. While GDScript can be edited directly in the editor, Rust cannot, so exposing properties avoids unnecessary code changes and recompiles when you are tweaking simple 2D or 3D gameplay values during iteration.
 
-You can still use GDScript and Rust together in the same project, and if you are using the .NET build of Godot, C# as well. A common approach is to prototype everything in GDScript, and re-write in Rust after you achive your goal with that module. Another common approach is to prototype everything in GDScript, rewrite most parts in Rust, and use C# for components that benefit from a more robust reflection system.
-
-## Where to Find Help?
-
-If you encounter problems or have suggestions for the CLI itself, including ideas for new templates, changes, or bug fixes, please [open an issue](https://github.com/viniciusmorgado/godust). Feel free to submit pull requests (PRs) for any changes or improvements you'd like to contribute.
-
-However, if you need assistance with programming your game using Godot and Rust, here are some excellent resources:
-
-- **godot-rust Official Book**: The [official book](https://godot-rust.github.io/book/index.html) is your primary guide for learning Godot with Rust.
-- **godot-rust API Documentation**: For detailed information on the available functions and modules, consult the [API documentation](https://godot-rust.github.io/docs/).
-- **godot-rust GitHub**: If you encounter bugs specifically related to godot-rust, you can check their [GitHub repository here](https://github.com/godot-rust/gdext).
-- **godot-rust Demo Projects**: Remember that godot-rust also maintains its own repository of [demo projects](https://github.com/godot-rust/demo-projects). While our templates don't strictly adhere to these examples (we aim for more dynamic generation), you can still extract useful content and insights from them.
-- **Community Communication Channels**: For further community engagement for godot-rust, you can find links to communication groups like Discord and Mastodon on the [godot-rust main website](https://godot-rust.github.io/).
-
-- **Godot Engine Official Documentation**: You will likely also want to consult the [Godot Engine official documentation](https://docs.godotengine.org/en/latest/). It's arguably the best source for understanding the engine's core concepts and inner workings. If you're learning, adapting the GDScript and C# samples and tutorials to Rust can be an extremely helpful exercise.
-
-**Disclaimer**: Please note that this CLI and its templates are an independent project and are not associated with godot-rust or its development team.
+You can still use GDScript and Rust together in the same project, and if you are using the .NET build of Godot, C# as well. A common approach is to prototype everything in GDScript, and re-write in Rust after you achieve your goal with that module. Another common approach is to prototype everything in GDScript, rewrite most parts in Rust, and use C# for components that benefits from a more robust reflection system.
 
 ## Templates
 
-| Template | Status | Description |
-|----------|--------|-------------|
-| **Blank** | ✅ | Godot-rust and Godot setup ready to use. No additional code or nodes, most minimal template. |
-| **Default** | ✅ | Build on top of the blank template, adds sensible defaults such as a splash screen fro brand and engine, platform‑specific optimizations, and more. Default template when no template is selected. |
-| **Blank + Bevy ECS** | ✅ | Blank template integrated with Bevy's Entity Component System. |
-| **Third Person** | 🚧 | Complete third-person character controller with camera, movement, and interaction systems. |
-| **First Person** | 🚧 | Complete first-person character controller with mouse look, WASD movement, and basic mechanics. |
+- Minimal: Godot-rust setup ready to use. No additional code or nodes, the most minimal template available. It's basically an automated version of the godot-rust setup [tutorial](https://godot-rust.github.io/book/intro/hello-world.html), all other templates are built on top of minimal.
+- Default: Built on top of minimal is a basic template that contains (or  will) sensible defaults like main menu, splash screen for engine and brand, and platform specific optimizations, right now only the splash screen is available.
+- ECS: Built on top of minimal is a basic template that integrates, with examples, of Bevy ECS for your Godot project.
+- Third Person: Complete third-person character controller with camera, movement, and interaction systems.
+- First Person: Complete first-person character controller with mouse look, WASD movement, and basic mechanics.
+- Mobile: Complete mobile template with correct platform optimization, screen resolution and other tweaks, for both Android and iOS.
+
+## Templates Roadmap
+
+| Template                 | Status |
+|--------------------------|--------|
+| **Minimal**              | ✅     | 
+| **Default**              | ✅     | 
+| **ECS**                  | ✅     |
+| **Third Person**         | 🚧     |
+| **First Person**         | 📋     |
+| **Mobile (Android/iOS)** | 📋     |
 
 ---
 
 **Status Legend:**
 - ✅ **Complete** - Ready to use
 - 🚧 **In Progress** - Currently being developed
+- 📋 Planned - Scheduled for future development
 
 ## Pre-requisites
 
@@ -64,16 +60,16 @@ To use the default template you need to define the engine version, render method
 godust --name my_project_name --engine 4.6 --rendering-method "forward_plus"
 ```
 
-You can also explicitly specify the template (optional, since it defaults to "default" when not provided a template):
+To choose a template different from the default you should explicitly specify the template:
 
 ```
-godust --name my_project_name --engine 4.6 --rendering-method "forward_plus" --template blank
+godust --name my_project_name --engine 4.6 --rendering-method "forward_plus" --template ecs
 ```
 
 Or using the short form:
 
 ```
-godust -n my_project_name -e 4.6 -r "forward_plus" -t blank
+godust -n my_project_name -e 4.6 -r "forward_plus" -t ecs
 ```
 
 Godust help:
@@ -87,7 +83,7 @@ Options:
   -n, --name <NAME>                          Project name
   -e, --engine <ENGINE>                      Engine version
   -r, --rendering-method <RENDERING_METHOD>  Render method (forward_plus, gl_compatibility, mobile)
-  -t, --template <TEMPLATE>                  Template (available: blank, blank_ecs) [default: blank]
+  -t, --template <TEMPLATE>                  Template (available: minimal, ecs) [default: default]
   -h, --help                                 Print help
   -V, --version                              Print version
 ```
@@ -97,11 +93,11 @@ Everything works well if you see something like this:
 ```
 ✅ Successfully created project structure for 'my_project_name'...
 🔨 Building template context...
-📝 Generating project files from 'blank_ecs' template...
+📝 Generating project files from 'ecs' template...
 🔨 Building Rust library (this may take a moment)...
 ✅ Rust library built successfully!
 
-✅ Successfully generated 'my_project_name' from template 'blank_ecs'!
+✅ Successfully generated 'my_project_name' from template 'ecs'!
 
 📁 Project structure:
    my-project-name/
@@ -126,13 +122,29 @@ After generating your Godot-Rust project with Godust, the Rust library is automa
 
 Even though the template generation process customizes the name of the core project (the Rust part of the project), which is different from the default defined in the [godot-rust book HelloWorld tutorial](https://godot-rust.github.io/book/intro/hello-world.html), the overall structure still needs to respect the same layout.
 
+## Where to Find Help?
+
+If you encounter problems or have suggestions for the CLI itself, including ideas for new templates, changes, or bug fixes, please [open an issue](https://github.com/viniciusmorgado/godust). Feel free to submit pull requests (PRs) for any changes or improvements you'd like to contribute.
+
+However, if you need assistance with programming your game using Godot and Rust, here are some excellent resources:
+
+- **godot-rust Official Book**: The [official book](https://godot-rust.github.io/book/index.html) is your primary guide for learning Godot with Rust.
+- **godot-rust API Documentation**: For detailed information on the available functions and modules, consult the [API documentation](https://godot-rust.github.io/docs/).
+- **godot-rust GitHub**: If you encounter bugs specifically related to godot-rust, you can check their [GitHub repository here](https://github.com/godot-rust/gdext).
+- **godot-rust Demo Projects**: Remember that godot-rust also maintains its own repository of [demo projects](https://github.com/godot-rust/demo-projects). While our templates don't strictly adhere to these examples (we aim for more dynamic generation), you can still extract useful content and insights from them.
+- **Community Communication Channels**: For further community engagement for godot-rust, you can find links to communication groups like Discord and Mastodon on the [godot-rust main website](https://godot-rust.github.io/).
+
+- **Godot Engine Official Documentation**: You will likely also want to consult the [Godot Engine official documentation](https://docs.godotengine.org/en/latest/). It's arguably the best source for understanding the engine's core concepts and inner workings. If you're learning, adapting the GDScript and C# samples and tutorials to Rust can be an extremely helpful exercise.
+
+**Disclaimer**: Please note that this CLI and its templates are an independent project and are not associated with godot-rust or its development team.
+
 ## Contributing
 
-Contributions are welcome. Please open an issue for bugs or feature ideas, then submit a pull request against `main`.
+Contributions are welcome. Please open an issue for bugs or feature ideas, then submit a pull request against `develop` from a work branch.
 
 ### PR naming and versioning
 
-The release workflow derives the next version from commit messages on `main`. To ensure your change bumps the correct version, use a squash merge with a PR title that matches one of these prefixes:
+The release workflow derives the next version from commit messages on `develop`. To ensure your change bumps the correct version, use a squash merge with a PR title that matches one of these prefixes:
 
 - `BREAKING CHANGE:` for a major bump
 - `feat:` for a minor bump

@@ -3,7 +3,7 @@ use tera::Context;
 
 use crate::utils::{crates_version, naming};
 
-/// Builds the Tera Context for the "blank" template
+/// Builds the Tera Context for the "minimal" template
 ///
 /// This template creates a basic Godot + Rust project with:
 /// - Cargo.toml with godot dependency

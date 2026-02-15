@@ -151,7 +151,7 @@ fn discover_template_structure<'a>(template_dir: &'a Dir<'a>)
     let mut relative_paths = HashMap::new();
 
     // Get the base path that we need to strip from all file paths
-    // This is the template directory name (e.g., "blank" or "blank_ecs")
+    // This is the template directory name (e.g., "minimal" or "ecs")
     let base_prefix = template_dir.path();
 
     // Recursively traverse embedded directory

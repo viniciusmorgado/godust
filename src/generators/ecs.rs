@@ -13,6 +13,7 @@ pub async fn build_context(
 
     let detected_casing = naming::detect_casing(project_name);
     let kebab_name = naming::split_into_kebab_case(project_name, detected_casing);
+    
     let pascal_name = naming::split_into_pascal_case( &project_name.to_string()
                                                            , detected_casing );
 
