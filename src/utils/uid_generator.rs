@@ -1,7 +1,6 @@
-use rand::rng;
-
 pub fn generate_godot_uid() -> String {
-    use rand::Rng;
+    use rand::{RngExt, rng};
+
     let mut rng = rng();
     let chars: String = (0..13)
         .map(|_| {

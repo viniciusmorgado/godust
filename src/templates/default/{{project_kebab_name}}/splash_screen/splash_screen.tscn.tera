@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://defj2hsybb74"]
+
+[ext_resource type="Texture2D" uid="uid://dsk32gom5sgfd" path="res://splash_screen/logo.svg" id="1_11ivb"]
+[ext_resource type="PackedScene" uid="uid://btrimqkdorhq2" path="res://Main.tscn" id="1_l1q4m"]
+
+[node name="SplashScreen" type="SplashScreen" unique_id=1644894392 node_paths=PackedStringArray("logo")]
+next_scene = ExtResource("1_l1q4m")
+logo = NodePath("CenterContainer/Logo")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackgroundColor" type="ColorRect" parent="." unique_id=168934794]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.14509805, 0.15686275, 0.16862746, 1)
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=374329811]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Logo" type="TextureRect" parent="CenterContainer" unique_id=1960069263]
+custom_minimum_size = Vector2(512, 207)
+layout_mode = 2
+texture = ExtResource("1_11ivb")
+expand_mode = 2
+stretch_mode = 5

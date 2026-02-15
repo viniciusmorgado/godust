@@ -1,6 +1,12 @@
+## Latest Update
+
+- Replace minimal blank template as default option by the new "default" template. Blank remains available but need to be explicitly invoke.
+- Upgrade recommended version to Godot 4.6, and minimal to 4.2
+- Add new version of Default template, build on top of blank with new sensible defaults.
+
 # Godust
 
-Godust is a CLI tool that generates [Godot Engine](https://godotengine.org/) project templates in Rust, specifically using the godot-rust library (GDExtension bindings for Rust).
+Godust is opinionated CLI tool that generates [Godot Engine](https://godotengine.org/) project templates in Rust, specifically using the godot-rust library (GDExtension bindings for Rust).
 
 The [godot-rust](https://godot-rust.github.io/) library is a pure Rust implementation of the GDExtension bindings. This means you can write code in Rust that's equivalent to what you'd typically use GDScript or C# for in Godot.
 
@@ -26,14 +32,13 @@ However, if you need assistance with programming your game using Godot and Rust,
 
 **Disclaimer**: Please note that this CLI and its templates are an independent project and are not associated with godot-rust or its development team.
 
-# Templates Roadmap
-
 ## Templates
 
 | Template | Status | Description |
 |----------|--------|-------------|
-| **Blank** | ✅ | Godot-rust and Godot setup ready to use. Default template when no template is selected. Provides minimal project structure to start building. |
-| **Blank + Bevy ECS** | ✅ | Blank template integrated with Bevy's Entity Component System for enhanced game logic architecture and performance. |
+| **Blank** | ✅ | Godot-rust and Godot setup ready to use. No additional code or nodes, most minimal template. |
+| **Default** | ✅ | Build on top of the blank template, adds sensible defaults such as a splash screen fro brand and engine, platform‑specific optimizations, and more. Default template when no template is selected. |
+| **Blank + Bevy ECS** | ✅ | Blank template integrated with Bevy's Entity Component System. |
 | **Third Person** | 🚧 | Complete third-person character controller with camera, movement, and interaction systems. |
 | **First Person** | 🚧 | Complete first-person character controller with mouse look, WASD movement, and basic mechanics. |
 
@@ -53,13 +58,13 @@ Before getting started, please ensure you have the following installed:
 
 To generate the template:
 
-To use the blank template you need to define the engine version, render method and the project name:
+To use the default template you need to define the engine version, render method and the project name:
 
 ```
 godust --name my_project_name --engine 4.6 --rendering-method "forward_plus"
 ```
 
-You can also explicitly specify the template (optional, since it defaults to "blank" when not provided a template):
+You can also explicitly specify the template (optional, since it defaults to "default" when not provided a template):
 
 ```
 godust --name my_project_name --engine 4.6 --rendering-method "forward_plus" --template blank

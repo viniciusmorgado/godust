@@ -24,7 +24,8 @@ pub fn detect_casing(input: &str) -> Casing {
     }
 
     if has_underscore && !has_hyphen {
-        let all_chars_valid_for_snake = input.chars().all(|c| c.is_ascii_lowercase() || c == '_');
+        let all_chars_valid_for_snake = input.chars().all(|c| c.is_ascii_lowercase() ||
+                                                                 c == '_');
         if all_chars_valid_for_snake {
             return Casing::SnakeCase;
         } else {
@@ -33,7 +34,8 @@ pub fn detect_casing(input: &str) -> Casing {
     }
 
     if has_hyphen && !has_underscore {
-        let all_chars_valid_for_kebab = input.chars().all(|c| c.is_ascii_lowercase() || c == '-');
+        let all_chars_valid_for_kebab = input.chars().all(|c| c.is_ascii_lowercase() ||
+                                                                 c == '-');
         if all_chars_valid_for_kebab {
             return Casing::KebabCase;
         } else {
@@ -42,11 +44,19 @@ pub fn detect_casing(input: &str) -> Casing {
     }
 
     let first_char = input.chars().next().unwrap();
-    let has_uppercase_internal = input.chars().skip(1).any(|c| c.is_ascii_uppercase());
-    let has_lowercase_internal = input.chars().skip(1).any(|c| c.is_ascii_lowercase());
+
+    let has_uppercase_internal = input.chars()
+                                            .skip(1)
+                                            .any(|c| c.is_ascii_uppercase());
+
+    let has_lowercase_internal = input.chars()
+                                            .skip(1)
+                                            .any(|c| c.is_ascii_lowercase());
 
     if first_char.is_ascii_uppercase() {
-        if has_lowercase_internal || !input.chars().skip(1).any(|c| c.is_ascii_uppercase()) {
+        if has_lowercase_internal || !input.chars()
+                                           .skip(1)
+                                           .any(|c| c.is_ascii_uppercase()) {
             return Casing::PascalCase;
         }
     } else if first_char.is_ascii_lowercase() {

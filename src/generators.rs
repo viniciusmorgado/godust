@@ -5,3 +5,4 @@
 /// required by that template.
 pub mod blank;
 pub mod blank_ecs;
+pub mod default;

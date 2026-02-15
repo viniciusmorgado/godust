@@ -144,7 +144,8 @@ pub fn parse_template(
     Ok(())
 }
 
-fn discover_template_structure<'a>(template_dir: &'a Dir<'a>) -> Result<TemplateStructure<'a>, io::Error> {
+fn discover_template_structure<'a>(template_dir: &'a Dir<'a>)
+        -> Result<TemplateStructure<'a>, io::Error> {
     let mut tera_files = Vec::new();
     let mut static_files = Vec::new();
     let mut relative_paths = HashMap::new();
