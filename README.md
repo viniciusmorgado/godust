@@ -19,12 +19,12 @@ You can still use GDScript and Rust together in the same project, and if you are
 
 ## Templates
 
-- Minimal: Godot-rust setup ready to use. No additional code or nodes, the most minimal template available. It's basically an automated version of the godot-rust setup [tutorial](https://godot-rust.github.io/book/intro/hello-world.html), all other templates are built on top of minimal.
-- Default: Built on top of minimal is a basic template that contains (or  will) sensible defaults like main menu, splash screen for engine and brand, and platform specific optimizations, right now only the splash screen is available.
-- ECS: Built on top of minimal is a basic template that integrates, with examples, of Bevy ECS for your Godot project.
-- Third Person: Complete third-person character controller with camera, movement, and interaction systems.
-- First Person: Complete first-person character controller with mouse look, WASD movement, and basic mechanics.
-- Mobile: Complete mobile template with correct platform optimization, screen resolution and other tweaks, for both Android and iOS.
+- **Minimal**: Godot-rust setup ready to use. No additional code or nodes, the most minimal template available. It's basically an automated version of the godot-rust setup [tutorial](https://godot-rust.github.io/book/intro/hello-world.html), all other templates are built on top of minimal.
+- **Default**: Built on top of minimal is a basic template that contains (or  will) sensible defaults like main menu, splash screen for engine and brand, and platform specific optimizations, right now only the splash screen is available.
+- **ECS**: Built on top of minimal is a basic template that integrates, with examples, of Bevy ECS for your Godot project.
+- **Third Person**: Complete third-person character controller with camera, movement, and interaction systems.
+- **First Person**: Complete first-person character controller with mouse look, WASD movement, and basic mechanics.
+- **Mobile**: Complete mobile template with correct platform optimization, screen resolution and other tweaks, for both Android and iOS.
 
 ## Templates Roadmap
 
