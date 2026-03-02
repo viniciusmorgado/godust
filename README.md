@@ -1,11 +1,6 @@
-## Latest Update
-
-- The blank and blank_ecs templates now are called minimal and ecs respectively to avoid confusion.
-- Add new template called "default", built on top of minimal (old blank) template but with sensible defaults.
-- Upgrade recommended version to Godot 4.6, and minimum to 4.2.
-- The new default template already contains a splash_screen component, but new sensible defaults are under development.
-
 # Godust
+
+Visit [Godust official website](https://godust.donatto.dev.br/) for more information and documentation.
 
 Godust is an opinionated CLI tool that generates [Godot Engine](https://godotengine.org/) project templates in Rust, specifically using the godot-rust library (GDExtension bindings for Rust).
 
@@ -121,22 +116,6 @@ After generating your Godot-Rust project with Godust, the Rust library is automa
 - For production/release: `cd my_project_name_core && cargo build --release`
 
 Even though the template generation process customizes the name of the core project (the Rust part of the project), which is different from the default defined in the [godot-rust book HelloWorld tutorial](https://godot-rust.github.io/book/intro/hello-world.html), the overall structure still needs to respect the same layout.
-
-## Where to Find Help?
-
-If you encounter problems or have suggestions for the CLI itself, including ideas for new templates, changes, or bug fixes, please [open an issue](https://github.com/viniciusmorgado/godust). Feel free to submit pull requests (PRs) for any changes or improvements you'd like to contribute.
-
-However, if you need assistance with programming your game using Godot and Rust, here are some excellent resources:
-
-- **godot-rust Official Book**: The [official book](https://godot-rust.github.io/book/index.html) is your primary guide for learning Godot with Rust.
-- **godot-rust API Documentation**: For detailed information on the available functions and modules, consult the [API documentation](https://godot-rust.github.io/docs/).
-- **godot-rust GitHub**: If you encounter bugs specifically related to godot-rust, you can check their [GitHub repository here](https://github.com/godot-rust/gdext).
-- **godot-rust Demo Projects**: Remember that godot-rust also maintains its own repository of [demo projects](https://github.com/godot-rust/demo-projects). While our templates don't strictly adhere to these examples (we aim for more dynamic generation), you can still extract useful content and insights from them.
-- **Community Communication Channels**: For further community engagement for godot-rust, you can find links to communication groups like Discord and Mastodon on the [godot-rust main website](https://godot-rust.github.io/).
-
-- **Godot Engine Official Documentation**: You will likely also want to consult the [Godot Engine official documentation](https://docs.godotengine.org/en/latest/). It's arguably the best source for understanding the engine's core concepts and inner workings. If you're learning, adapting the GDScript and C# samples and tutorials to Rust can be an extremely helpful exercise.
-
-**Disclaimer**: Please note that this CLI and its templates are an independent project and are not associated with godot-rust or its development team.
 
 ## Contributing
 
