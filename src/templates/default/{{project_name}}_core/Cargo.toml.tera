@@ -1,13 +1,3 @@
-[package]
-name = "{{ project_name }}"
-version = "0.1.0"
-edition = "2024"
-
-[dependencies]
-godot = {version = "0.4.5", features = ["register-docs"]}
-
-[dev-dependencies]
-criterion = { version = "0.8.1", features = ["html_reports"] }
-
-[lib]
-crate-type = ["cdylib"]
+[workspace]
+resolver = "2"
+members = ["{{ project_name }}_lib"]

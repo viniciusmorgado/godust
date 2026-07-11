@@ -187,12 +187,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
     println!("\n📁 Project structure:");
     println!("   {}/", kebab_name);
-    println!("   ├── {}/          (Godot project)", kebab_name);
-    println!("   └── {}_core/     (Rust library)", args.name);
+    println!("   ├── {}/                (Godot project)", kebab_name);
+    println!("   └── {}_core/           (Rust workspace)", args.name);
+    println!("       └── {}_lib/        (Rust library — gameplay code)", args.name);
     println!("\n💡 Next steps:");
     println!("   cd {}", kebab_name);
     println!("   cd {}_core && cargo build", args.name);
     println!("   Open {} in Godot Editor", kebab_name);
+    println!("\n📦 Add a gameplay dependency (no -p flag needed):");
+    println!("   cd {}_core && cargo add <crate>", args.name);
 
     Ok(())
 }

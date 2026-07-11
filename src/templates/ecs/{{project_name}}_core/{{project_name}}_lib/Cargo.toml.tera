@@ -1,0 +1,11 @@
+[package]
+name = "{{ project_name }}"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+godot = "{{ godot_version }}"
+bevy_ecs = "{{ bevy_ecs_version }}"
+
+[lib]
+crate-type = ["cdylib"]
