@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::fs;
 use std::io;
 use std::path::{Path, PathBuf};
-use tera::{Context, Tera, Value};
+use tera::{Context, Kwargs, State, Tera, TeraResult};
 use include_dir::{Dir, File};
 
 use crate::utils::uid_generator;
@@ -195,6 +195,7 @@ fn discover_template_structure<'a>(template_dir: &'a Dir<'a>)
 
 fn init_tera_engine(template_dir: &Dir) -> Result<Tera, io::Error> {
     let mut tera = Tera::default();
+    tera.register_function("generate_uid", generate_uid_function);
 
     // Get the base path to strip from template names
     let base_prefix = template_dir.path();
@@ -240,15 +241,13 @@ fn init_tera_engine(template_dir: &Dir) -> Result<Tera, io::Error> {
 
     add_tera_files(template_dir, &mut tera, base_prefix)?;
 
-    tera.register_function("generate_uid", generate_uid_function);
-
     Ok(tera)
 }
 
-fn generate_uid_function(_args: &HashMap<String, Value>) -> tera::Result<Value> {
+fn generate_uid_function(_kwargs: Kwargs, _state: &State) -> TeraResult<String> {
     let uid = uid_generator::generate_godot_uid();
     let uid_without_prefix = uid.trim_start_matches("uid://");
-    Ok(Value::String(uid_without_prefix.to_string()))
+    Ok(uid_without_prefix.to_string())
 }
 
 fn validate_destination(
