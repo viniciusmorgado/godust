@@ -1,11 +1,6 @@
-## Latest Update
-
-- The blank and blank_ecs templates now are called minimal and ecs respectively to avoid confusion.
-- Add new template called "default", built on top of minimal (old blank) template but with sensible defaults.
-- Upgrade recommended version to Godot 4.6, and minimum to 4.2.
-- The new default template already contains a splash_screen component, but new sensible defaults are under development.
-
 # Godust
+
+Visit [Godust official website](https://godust.donatto.dev.br/) for more information and documentation.
 
 Godust is an opinionated CLI tool that generates [Godot Engine](https://godotengine.org/) project templates in Rust, specifically using the godot-rust library (GDExtension bindings for Rust).
 
@@ -19,12 +14,13 @@ You can still use GDScript and Rust together in the same project, and if you are
 
 ## Templates
 
-- **Minimal**: Godot-rust setup ready to use. No additional code or nodes, the most minimal template available. It's basically an automated version of the godot-rust setup [tutorial](https://godot-rust.github.io/book/intro/hello-world.html), all other templates are built on top of minimal.
-- **Default**: Built on top of minimal is a basic template that contains (or  will) sensible defaults like main menu, splash screen for engine and brand, and platform specific optimizations, right now only the splash screen is available.
-- **ECS**: Built on top of minimal is a basic template that integrates, with examples, Bevy ECS for your Godot project.
-- **Third Person**: Complete third-person character controller with camera, movement, and interaction systems.
-- **First Person**: Complete first-person character controller with mouse look, WASD movement, and basic mechanics.
-- **Mobile**: Complete mobile template with correct platform optimization, screen resolution and other tweaks, for both Android and iOS.
+- **minimal**: Godot-rust setup ready to use. No additional code or nodes, the most minimal template available. It's basically an automated version of the godot-rust setup [tutorial](https://godot-rust.github.io/book/intro/hello-world.html), all other templates are built on top of minimal.
+- **default**: Built on top of minimal is a basic template that contains (or  will) sensible defaults like main menu, splash screen for engine and brand, and platform specific optimizations, right now only the splash screen is available.
+- **ecs**: Built on top of minimal is a basic template that integrates, with examples, Bevy ECS for your Godot project.
+- **first_person**: First-person character controller with mouse look, WASD movement, and basic mechanics.
+- **third_person**: Third-person character controller with camera, mouse look, WASD movement, and interaction systems.
+- **open_world**: Complete swappable third and first person (Elder Scrolls-Like) character controller with camera, mouse look, WASD movement, interaction systems and Terrain3D extension for open world map creation.
+- **mobile**: Mobile template with correct platform optimization, screen resolution and other tweaks, for both Android and iOS.
 
 ## Templates Roadmap
 
@@ -33,8 +29,9 @@ You can still use GDScript and Rust together in the same project, and if you are
 | **Minimal**              | ✅     |
 | **Default**              | ✅     |
 | **ECS**                  | ✅     |
-| **Third Person**         | 🚧     |
 | **First Person**         | 📋     |
+| **Third Person**         | 🚧     |
+| **Open World**           | 📋     |
 | **Mobile (Android/iOS)** | 📋     |
 
 ---
@@ -57,19 +54,19 @@ To generate the template:
 To use the default template you need to define the engine version, render method and the project name:
 
 ```
-godust --name my_project_name --engine 4.6 --rendering-method "forward_plus"
+godust --name my_project_name --engine 4.7 --rendering-method "forward_plus"
 ```
 
 To choose a template different from the default you should explicitly specify the template:
 
 ```
-godust --name my_project_name --engine 4.6 --rendering-method "forward_plus" --template ecs
+godust --name my_project_name --engine 4.7 --rendering-method "forward_plus" --template ecs
 ```
 
 Or using the short form:
 
 ```
-godust -n my_project_name -e 4.6 -r "forward_plus" -t ecs
+godust -n my_project_name -e 4.7 -r "forward_plus" -t ecs
 ```
 
 Godust help:
@@ -101,13 +98,17 @@ Everything works well if you see something like this:
 
 📁 Project structure:
    my-project-name/
-   ├── my-project-name/          (Godot project)
-   └── my_project_name_core/     (Rust library)
+   ├── my-project-name/                (Godot project)
+   └── my_project_name_core/           (Rust workspace)
+       └── my_project_name_lib/        (Rust library — gameplay code)
 
 💡 Next steps:
    cd my-project-name
    cd my_project_name_core && cargo build
    Open my-project-name in Godot Editor
+
+📦 Add a gameplay dependency (no -p flag needed):
+   cd my_project_name_core && cargo add <crate>
 ```
 
 ## Running Your Project
@@ -120,23 +121,14 @@ After generating your Godot-Rust project with Godust, the Rust library is automa
 - For development: `cd my_project_name_core && cargo build`
 - For production/release: `cd my_project_name_core && cargo build --release`
 
+**Adding gameplay dependencies**: `my_project_name_core` is a Cargo workspace containing a single member crate, `my_project_name_lib`, which holds your gameplay code. To add a dependency, run `cargo add` from the workspace root — Cargo automatically resolves the single workspace member, so there's no need for a `-p my_project_name_lib` flag:
+```
+cd my_project_name_core
+cargo add rand
+```
+This adds the dependency to `my_project_name_lib/Cargo.toml`, and it becomes available to any Rust module under `my_project_name_lib/src/`.
+
 Even though the template generation process customizes the name of the core project (the Rust part of the project), which is different from the default defined in the [godot-rust book HelloWorld tutorial](https://godot-rust.github.io/book/intro/hello-world.html), the overall structure still needs to respect the same layout.
-
-## Where to Find Help?
-
-If you encounter problems or have suggestions for the CLI itself, including ideas for new templates, changes, or bug fixes, please [open an issue](https://github.com/viniciusmorgado/godust). Feel free to submit pull requests (PRs) for any changes or improvements you'd like to contribute.
-
-However, if you need assistance with programming your game using Godot and Rust, here are some excellent resources:
-
-- **godot-rust Official Book**: The [official book](https://godot-rust.github.io/book/index.html) is your primary guide for learning Godot with Rust.
-- **godot-rust API Documentation**: For detailed information on the available functions and modules, consult the [API documentation](https://godot-rust.github.io/docs/).
-- **godot-rust GitHub**: If you encounter bugs specifically related to godot-rust, you can check their [GitHub repository here](https://github.com/godot-rust/gdext).
-- **godot-rust Demo Projects**: Remember that godot-rust also maintains its own repository of [demo projects](https://github.com/godot-rust/demo-projects). While our templates don't strictly adhere to these examples (we aim for more dynamic generation), you can still extract useful content and insights from them.
-- **Community Communication Channels**: For further community engagement for godot-rust, you can find links to communication groups like Discord and Mastodon on the [godot-rust main website](https://godot-rust.github.io/).
-
-- **Godot Engine Official Documentation**: You will likely also want to consult the [Godot Engine official documentation](https://docs.godotengine.org/en/latest/). It's arguably the best source for understanding the engine's core concepts and inner workings. If you're learning, adapting the GDScript and C# samples and tutorials to Rust can be an extremely helpful exercise.
-
-**Disclaimer**: Please note that this CLI and its templates are an independent project and are not associated with godot-rust or its development team.
 
 ## Contributing
 

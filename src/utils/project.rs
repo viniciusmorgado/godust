@@ -8,16 +8,19 @@ use crate::utils;
 pub struct Project {
     core_project: String,
     engine_project: String,
+    lib_project: String,
 }
 
 const DEFAULT_CORE_TEMPLATE: &str = "{}/{}_core";
 const DEFAULT_ENGINE_TEMPLATE: &str = "{}/{}";
+const DEFAULT_LIB_TEMPLATE: &str = "{}_lib";
 
 impl Default for Project {
     fn default() -> Self {
         Self {
             core_project: DEFAULT_CORE_TEMPLATE.to_string(),
             engine_project: DEFAULT_ENGINE_TEMPLATE.to_string(),
+            lib_project: DEFAULT_LIB_TEMPLATE.to_string(),
         }
     }
 }
@@ -37,10 +40,14 @@ impl Project {
                 .replacen("{}", &kebab_name, 1)
                 .replacen("{}", &kebab_name, 1);
 
+        let lib_name = self.lib_project.replacen("{}", name, 1);
+        let lib_path = format!("{}/{}", &core_path, &lib_name);
+
         fs::create_dir(&kebab_name)?;
         fs::create_dir(&engine_path)?;
         fs::create_dir(&core_path)?;
-        fs::create_dir(format!("{}/src", &core_path))?;
+        fs::create_dir(&lib_path)?;
+        fs::create_dir(format!("{}/src", &lib_path))?;
 
         Ok(())
     }
