@@ -29,8 +29,8 @@ You can still use GDScript and Rust together in the same project, and if you are
 | **Minimal**              | ✅     |
 | **Default**              | ✅     |
 | **ECS**                  | ✅     |
-| **First Person**         | 🚧     |
-| **Third Person**         | 📋     |
+| **First Person**         | 📋     |
+| **Third Person**         | 🚧     |
 | **Open World**           | 📋     |
 | **Mobile (Android/iOS)** | 📋     |
 
