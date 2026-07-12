@@ -14,19 +14,12 @@ You can still use GDScript and Rust together in the same project, and if you are
 
 ## Templates
 
-TODO: Os ECSs vão ser uma opção adicional via parametro.
-
 - **minimal**: Godot-rust setup ready to use. No additional code or nodes, the most minimal template available. It's basically an automated version of the godot-rust setup [tutorial](https://godot-rust.github.io/book/intro/hello-world.html), all other templates are built on top of minimal.
 - **default**: Built on top of minimal is a basic template that contains (or  will) sensible defaults like main menu, splash screen for engine and brand, and platform specific optimizations, right now only the splash screen is available.
 - **ecs**: Built on top of minimal is a basic template that integrates, with examples, Bevy ECS for your Godot project.
-- **open_world**: Complete swappable third and first person (Elder Scrolls-Like) character controller with camera, mouse look, WASD movement, interaction systems and Terrain3D extension for open world map creation.
-- **open_world_ecs**: Complete swappable third and first person (Elder Scrolls-Like) character controller with camera, mouse look, WASD movement, interaction systems and Terrain3D extension for open world map creation build with Bevy ECS.
-- **third_person**: Third-person character controller with camera, mouse look, WASD movement, and interaction systems.
-- **third_person_ecs**: Third-person character controller with camera, mouse look, WASD movement, and interaction systems build with Bevy ECS.
 - **first_person**: First-person character controller with mouse look, WASD movement, and basic mechanics.
-- **first_person_ecs**: First-person character controller with mouse look, WASD movement, and basic mechanics build with Bevy ECS.
-- **first_person_shooter**: Hitscan-based first-person shooter character controller with mouse look, WASD movement, and basic mechanics.
-- **first_person_shooter_ecs**: Projectile-based first-person shooter character controller with mouse look, WASD movement, and basic mechanics build with Bevy ECS.
+- **third_person**: Third-person character controller with camera, mouse look, WASD movement, and interaction systems.
+- **open_world**: Complete swappable third and first person (Elder Scrolls-Like) character controller with camera, mouse look, WASD movement, interaction systems and Terrain3D extension for open world map creation.
 - **mobile**: Mobile template with correct platform optimization, screen resolution and other tweaks, for both Android and iOS.
 
 ## Templates Roadmap
