@@ -105,13 +105,17 @@ Everything works well if you see something like this:
 
 📁 Project structure:
    my-project-name/
-   ├── my-project-name/          (Godot project)
-   └── my_project_name_core/     (Rust library)
+   ├── my-project-name/                (Godot project)
+   └── my_project_name_core/           (Rust workspace)
+       └── my_project_name_lib/        (Rust library — gameplay code)
 
 💡 Next steps:
    cd my-project-name
    cd my_project_name_core && cargo build
    Open my-project-name in Godot Editor
+
+📦 Add a gameplay dependency (no -p flag needed):
+   cd my_project_name_core && cargo add <crate>
 ```
 
 ## Running Your Project
@@ -123,6 +127,13 @@ After generating your Godot-Rust project with Godust, the Rust library is automa
 **Note**: The initial Rust build (debug mode) is performed automatically when you create the project. If you make changes to the Rust code later, you'll need to rebuild:
 - For development: `cd my_project_name_core && cargo build`
 - For production/release: `cd my_project_name_core && cargo build --release`
+
+**Adding gameplay dependencies**: `my_project_name_core` is a Cargo workspace containing a single member crate, `my_project_name_lib`, which holds your gameplay code. To add a dependency, run `cargo add` from the workspace root — Cargo automatically resolves the single workspace member, so there's no need for a `-p my_project_name_lib` flag:
+```
+cd my_project_name_core
+cargo add rand
+```
+This adds the dependency to `my_project_name_lib/Cargo.toml`, and it becomes available to any Rust module under `my_project_name_lib/src/`.
 
 Even though the template generation process customizes the name of the core project (the Rust part of the project), which is different from the default defined in the [godot-rust book HelloWorld tutorial](https://godot-rust.github.io/book/intro/hello-world.html), the overall structure still needs to respect the same layout.
 

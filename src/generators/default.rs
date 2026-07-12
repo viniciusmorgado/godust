@@ -20,10 +20,15 @@ pub async fn build_context(
         .await
         .unwrap_or_else(|_| "0.1.0".to_string());
 
+    let criterion_version = crates_version::get_crate_version("criterion")
+        .await
+        .unwrap_or_else(|_| "0.8.1".to_string());
+
     context.insert("project_name", project_name);
     context.insert("project_kebab_name", &kebab_name);
     context.insert("struct_name", &pascal_name);
     context.insert("godot_version", &godot_version);
+    context.insert("criterion_version", &criterion_version);
     context.insert("engine_version", engine_version);
     context.insert("rendering_method", rendering_method);
     context.insert("rendering_method_formatted", rendering_method_formatted);

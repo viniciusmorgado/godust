@@ -66,33 +66,31 @@ impl SplashScreen {
         logo_color.a = self.initial_alpha;
         splash_screen.set_modulate(logo_color);
 
-        if let Some(mut tween) = splash_screen.create_tween() {
-            let fade_in_target = 1.0_f64.to_variant();  // alfa → 1.0 (opaco)
-            let fade_out_target = 0.0_f64.to_variant(); // alfa → 0.0 (transparente)
-            let splash_screen_obj = splash_screen.upcast::<Object>();
+        let mut tween = splash_screen.create_tween();
+        let fade_in_target = 1.0_f64.to_variant();  // alfa → 1.0 (opaco)
+        let fade_out_target = 0.0_f64.to_variant(); // alfa → 0.0 (transparente)
+        let splash_screen_obj = splash_screen.upcast::<Object>();
 
-            tween.tween_interval(self.in_time);
-            tween.tween_property(
-                &splash_screen_obj,
-                "modulate:a",
-                &fade_in_target,
-                self.fade_in_time,
-            );
-            tween.tween_interval(self.pause_time);
-            tween.tween_property(
-                &splash_screen_obj,
-                "modulate:a",
-                &fade_out_target,
-                self.fade_out_time,
-            );
-            tween.tween_interval(self.out_time);
+        tween.tween_interval(self.in_time);
+        tween.tween_property(
+            &splash_screen_obj,
+            "modulate:a",
+            &fade_in_target,
+            self.fade_in_time,
+        );
+        tween.tween_interval(self.pause_time);
+        tween.tween_property(
+            &splash_screen_obj,
+            "modulate:a",
+            &fade_out_target,
+            self.fade_out_time,
+        );
+        tween.tween_interval(self.out_time);
 
-            godot::task::spawn(async move {
-                tween.signals().finished().to_future().await;
-                if let Some(mut tree) = scene_tree {
-                    tree.change_scene_to_packed(&next_scene);
-                }
-            });
-        }
+        godot::task::spawn(async move {
+            tween.signals().finished().to_future().await;
+            let mut tree = scene_tree;
+            tree.change_scene_to_packed(&next_scene);
+        });
     }
 }
