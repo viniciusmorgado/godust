@@ -54,19 +54,19 @@ To generate the template:
 To use the default template you need to define the engine version, render method and the project name:
 
 ```
-godust --name my_project_name --engine 4.6 --rendering-method "forward_plus"
+godust --name my_project_name --engine 4.7 --rendering-method "forward_plus"
 ```
 
 To choose a template different from the default you should explicitly specify the template:
 
 ```
-godust --name my_project_name --engine 4.6 --rendering-method "forward_plus" --template ecs
+godust --name my_project_name --engine 4.7 --rendering-method "forward_plus" --template ecs
 ```
 
 Or using the short form:
 
 ```
-godust -n my_project_name -e 4.6 -r "forward_plus" -t ecs
+godust -n my_project_name -e 4.7 -r "forward_plus" -t ecs
 ```
 
 Godust help:
