@@ -80,13 +80,10 @@ jobs:
       - name: Build on FreeBSD remote server
         if: matrix.remote_build == true
         run: |
-          ssh -i ~/.ssh/freebsd_key ${{ secrets.FREEBSD_USER }}@${{ secrets.FREEBSD_HOST }} 'sh -s' << 'EOF'
-            set -e
+          ssh -i ~/.ssh/freebsd_key ${{ secrets.FREEBSD_USER }}@${{ secrets.FREEBSD_HOST }} << 'EOF'
             cd /root/repos/godust
-            git fetch origin
-            git reset --hard origin/main
-            git clean -fd
-            rustup update stable
+            git checkout main
+            git pull
             cargo clean
             cargo build --release
           EOF
