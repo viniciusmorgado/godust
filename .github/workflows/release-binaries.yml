@@ -80,10 +80,13 @@ jobs:
       - name: Build on FreeBSD remote server
         if: matrix.remote_build == true
         run: |
-          ssh -i ~/.ssh/freebsd_key ${{ secrets.FREEBSD_USER }}@${{ secrets.FREEBSD_HOST }} << 'EOF'
+          ssh -i ~/.ssh/freebsd_key ${{ secrets.FREEBSD_USER }}@${{ secrets.FREEBSD_HOST }} 'sh -s' << 'EOF'
+            set -e
             cd /root/repos/godust
-            git checkout main
-            git pull
+            git fetch origin
+            git reset --hard origin/main
+            git clean -fd
+            rustup update stable
             cargo clean
             cargo build --release
           EOF
@@ -145,6 +148,7 @@ jobs:
           name: godust-${{ matrix.target }}
           path: godust-${{ matrix.target }}.${{ matrix.archive }}
           if-no-files-found: error
+          overwrite: true
 
   release:
     name: Create GitHub Release
